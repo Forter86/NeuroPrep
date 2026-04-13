@@ -23,7 +23,6 @@ export function LearningPathSelector() {
               : "border-slate-300/80 bg-cyan-500/75 text-white hover:bg-cyan-500/85 dark:border-slate-700 dark:bg-cyan-700/70"
           }`}
         >
-          <span className="absolute -right-8 top-1/3 hidden h-20 w-16 rounded-r-full border-r border-y border-slate-300/60 bg-cyan-500/90 md:block dark:border-slate-700/60 dark:bg-cyan-600/90" />
           <h3 className="text-4xl font-semibold">Тесты</h3>
           <p className="mt-5 max-w-xs text-sm leading-relaxed text-white/90">
             Тесты, подогнанные под тебя: проверка знаний, адаптивная сложность и быстрый фидбек по темам ТБ.
@@ -39,7 +38,6 @@ export function LearningPathSelector() {
               : "border-slate-300/80 bg-fuchsia-600/80 text-white hover:bg-fuchsia-600/90 dark:border-slate-700 dark:bg-fuchsia-700/75"
           }`}
         >
-          <span className="absolute -left-8 top-2/3 hidden h-20 w-16 rounded-l-full border-l border-y border-slate-300/60 bg-fuchsia-600/90 md:block dark:border-slate-700/60 dark:bg-fuchsia-600/90" />
           <h3 className="text-4xl font-semibold">Сценарии</h3>
           <p className="mt-5 max-w-xs text-sm leading-relaxed text-white/90">
             Обучающие сценарии на реальных ситуациях, которые научат правильно действовать и принимать решения в ТБ.
