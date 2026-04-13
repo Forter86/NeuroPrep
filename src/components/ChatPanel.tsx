@@ -64,22 +64,22 @@ export function ChatPanel() {
   }, [input, loading, messages, scrollToBottom]);
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col rounded-2xl border border-amber-900/20 bg-white/80 shadow-lg shadow-amber-950/5 backdrop-blur dark:border-amber-500/15 dark:bg-zinc-900/80">
+    <div className="flex min-h-0 flex-1 flex-col rounded-2xl border border-slate-300/70 bg-white/85 shadow-lg shadow-slate-900/5 backdrop-blur dark:border-slate-700/70 dark:bg-slate-900/85">
       <div className="max-h-[min(520px,70vh)] flex-1 space-y-3 overflow-y-auto p-4 sm:p-5">
         {messages.map((m, i) => (
           <div
             key={i}
             className={
               m.role === "user"
-                ? "ml-8 rounded-2xl rounded-br-md bg-amber-600 px-4 py-3 text-white dark:bg-amber-700"
-                : "mr-8 rounded-2xl rounded-bl-md border border-zinc-200 bg-zinc-50 px-4 py-3 text-zinc-800 dark:border-zinc-700 dark:bg-zinc-800/80 dark:text-zinc-100"
+                ? "ml-8 rounded-2xl rounded-br-md bg-blue-600 px-4 py-3 text-white dark:bg-blue-700"
+                : "mr-8 rounded-2xl rounded-bl-md border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-100"
             }
           >
             <p className="whitespace-pre-wrap text-[15px] leading-relaxed">{m.content}</p>
           </div>
         ))}
         {loading && (
-          <div className="mr-8 rounded-2xl rounded-bl-md border border-dashed border-amber-400/50 bg-amber-50/50 px-4 py-3 text-sm text-amber-900/80 dark:border-amber-500/30 dark:bg-amber-950/30 dark:text-amber-100/90">
+          <div className="mr-8 rounded-2xl rounded-bl-md border border-dashed border-blue-300/70 bg-blue-50/70 px-4 py-3 text-sm text-blue-900/80 dark:border-blue-500/30 dark:bg-blue-950/25 dark:text-blue-100/90">
             Думаю…
           </div>
         )}
@@ -92,7 +92,7 @@ export function ChatPanel() {
         </div>
       )}
 
-      <div className="flex gap-2 border-t border-amber-900/10 p-3 sm:p-4 dark:border-amber-500/10">
+      <div className="flex gap-2 border-t border-slate-300/70 p-3 sm:p-4 dark:border-slate-700/70">
         <input
           type="text"
           value={input}
@@ -104,7 +104,7 @@ export function ChatPanel() {
             }
           }}
           placeholder="Вопрос по ТБ, СИЗ, нормам…"
-          className="min-w-0 flex-1 rounded-xl border border-zinc-300 bg-white px-4 py-3 text-[15px] text-zinc-900 outline-none ring-amber-500/30 placeholder:text-zinc-400 focus:border-amber-500 focus:ring-2 dark:border-zinc-600 dark:bg-zinc-950 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+          className="min-w-0 flex-1 rounded-xl border border-slate-300 bg-white px-4 py-3 text-[15px] text-slate-900 outline-none ring-blue-500/30 placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500"
           disabled={loading}
           autoComplete="off"
         />
@@ -112,7 +112,7 @@ export function ChatPanel() {
           type="button"
           onClick={() => void send()}
           disabled={loading || !input.trim()}
-          className="shrink-0 rounded-xl bg-amber-600 px-5 py-3 text-[15px] font-medium text-white transition hover:bg-amber-700 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-amber-600 dark:hover:bg-amber-500"
+          className="shrink-0 rounded-xl bg-blue-600 px-5 py-3 text-[15px] font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-blue-600 dark:hover:bg-blue-500"
         >
           Отправить
         </button>
