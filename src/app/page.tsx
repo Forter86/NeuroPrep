@@ -1,8 +1,10 @@
 import { ChatPanel } from "@/components/ChatPanel";
+import { TopNavMenu } from "@/components/TopNavMenu";
 
 export default function Home() {
   return (
-    <div className="flex min-h-full flex-1 flex-col bg-[radial-gradient(ellipse_120%_80%_at_50%_-20%,rgba(59,130,246,0.17),transparent)] dark:bg-[radial-gradient(ellipse_120%_80%_at_50%_-20%,rgba(37,99,235,0.22),transparent)]">
+    <div className="relative flex min-h-full flex-1 flex-col bg-[radial-gradient(ellipse_120%_80%_at_50%_-20%,rgba(59,130,246,0.17),transparent)] dark:bg-[radial-gradient(ellipse_120%_80%_at_50%_-20%,rgba(37,99,235,0.22),transparent)]">
+      <TopNavMenu />
       <header className="border-b border-slate-300/70 bg-slate-50/80 backdrop-blur dark:border-slate-700/70 dark:bg-slate-950/80">
         <div className="mx-auto flex max-w-3xl flex-col gap-1 px-4 py-6 sm:px-6">
           <p className="text-xs font-semibold uppercase tracking-wider text-blue-700 dark:text-blue-400">
