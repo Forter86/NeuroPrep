@@ -1,16 +1,19 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState, type Dispatch, type SetStateAction } from "react";
 import type { ChatMessage } from "@/types/chat";
 
-const INTRO: ChatMessage = {
-  role: "assistant",
-  content:
-    "Привет! Я виртуальный помощник по охране труда и технике безопасности. Спроси про СИЗ, нормы, действия при инциденте — разберём по шагам.",
+type ChatPanelProps = {
+  messages: ChatMessage[];
+  setMessages: Dispatch<SetStateAction<ChatMessage[]>>;
 };
 
-export function ChatPanel() {
-  const [messages, setMessages] = useState<ChatMessage[]>([INTRO]);
+function extractReply(data: { reply?: string; ok?: boolean; error?: string; detail?: unknown }): string {
+  if (typeof data.reply === "string") return data.reply;
+  throw new Error(data.error ?? "Нет поля reply в ответе");
+}
+
+export function ChatPanel({ messages, setMessages }: ChatPanelProps) {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -38,7 +41,7 @@ export function ChatPanel() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: nextMessages }),
       });
-      const data = (await res.json()) as { reply?: string; error?: string; detail?: unknown };
+      const data = (await res.json()) as { reply?: string; ok?: boolean; error?: string; detail?: unknown };
 
       if (!res.ok) {
         const detail =
@@ -48,11 +51,8 @@ export function ChatPanel() {
         throw new Error((data.error ?? "Ошибка сервера") + detail);
       }
 
-      if (typeof data.reply !== "string") {
-        throw new Error("Нет поля reply в ответе");
-      }
-
-      setMessages((prev) => [...prev, { role: "assistant", content: data.reply! }]);
+      const reply = extractReply(data);
+      setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Не удалось отправить сообщение");
       setMessages((prev) => prev.slice(0, -1));
@@ -61,7 +61,7 @@ export function ChatPanel() {
       setLoading(false);
       requestAnimationFrame(scrollToBottom);
     }
-  }, [input, loading, messages, scrollToBottom]);
+  }, [input, loading, messages, setMessages, scrollToBottom]);
 
   return (
     <div className="flex min-h-0 flex-1 flex-col rounded-2xl border border-slate-300/70 bg-white/85 shadow-lg shadow-slate-900/5 backdrop-blur dark:border-slate-700/70 dark:bg-slate-900/85">
