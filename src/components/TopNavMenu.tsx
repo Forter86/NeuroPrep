@@ -62,7 +62,11 @@ export function TopNavMenu({ currentView, onSelect }: TopNavMenuProps) {
         {open && (
           <div
             id="top-nav-menu-dropdown"
-            className="mt-2 grid w-[min(90vw,620px)] grid-cols-1 gap-2 rounded-2xl border border-slate-300/80 bg-white/95 p-2 shadow-lg shadow-slate-900/10 backdrop-blur sm:grid-cols-[220px_1fr] dark:border-slate-700/80 dark:bg-slate-900/95"
+            className={`mt-2 grid gap-2 rounded-2xl border border-slate-300/80 bg-white/95 p-2 shadow-lg shadow-slate-900/10 backdrop-blur dark:border-slate-700/80 dark:bg-slate-900/95 ${
+              hoveredItem
+                ? "w-[min(90vw,620px)] grid-cols-1 sm:grid-cols-[220px_1fr]"
+                : "w-[min(90vw,240px)] grid-cols-1"
+            }`}
           >
             <ul className="space-y-1" onMouseLeave={() => setHoveredId(null)}>
               {ITEMS.map((item) => {
@@ -92,7 +96,7 @@ export function TopNavMenu({ currentView, onSelect }: TopNavMenuProps) {
             </ul>
 
             {hoveredItem && (
-              <div className="rounded-xl border border-slate-200/70 bg-slate-100/70 px-4 py-3 text-sm leading-relaxed text-slate-700 backdrop-blur-sm dark:border-slate-700/70 dark:bg-slate-800/55 dark:text-slate-200">
+              <div className="rounded-xl border border-slate-200/70 bg-slate-100/60 px-4 py-3 text-sm leading-relaxed text-slate-700 backdrop-blur-sm dark:border-slate-700/70 dark:bg-slate-800/50 dark:text-slate-200">
                 {hoveredItem.description}
               </div>
             )}

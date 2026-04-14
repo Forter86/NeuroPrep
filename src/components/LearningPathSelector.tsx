@@ -19,11 +19,10 @@ export function LearningPathSelector() {
           onClick={() => setSelected("tests")}
           className={`group relative min-h-[280px] rounded-l-3xl rounded-r-2xl border px-6 py-7 text-left transition ${
             selected === "tests"
-              ? "border-blue-400 bg-cyan-500/90 text-white shadow-md shadow-blue-500/20 dark:border-blue-400 dark:bg-cyan-600/90"
-              : "border-slate-300/80 bg-cyan-500/75 text-white hover:bg-cyan-500/85 dark:border-slate-700 dark:bg-cyan-700/70"
+              ? "border-blue-400 bg-blue-600/90 text-white shadow-md shadow-blue-500/20 dark:border-blue-400 dark:bg-blue-600/90"
+              : "border-slate-300/80 bg-blue-500/75 text-white hover:bg-blue-500/85 dark:border-slate-700 dark:bg-blue-700/70"
           }`}
         >
-          <span className="absolute -right-8 top-1/3 hidden h-20 w-16 rounded-r-full border-r border-y border-slate-300/60 bg-cyan-500/90 md:block dark:border-slate-700/60 dark:bg-cyan-600/90" />
           <h3 className="text-4xl font-semibold">Тесты</h3>
           <p className="mt-5 max-w-xs text-sm leading-relaxed text-white/90">
             Тесты, подогнанные под тебя: проверка знаний, адаптивная сложность и быстрый фидбек по темам ТБ.
@@ -35,11 +34,10 @@ export function LearningPathSelector() {
           onClick={() => setSelected("scenarios")}
           className={`group relative min-h-[280px] rounded-r-3xl rounded-l-2xl border px-6 py-7 text-left transition ${
             selected === "scenarios"
-              ? "border-blue-400 bg-fuchsia-600/90 text-white shadow-md shadow-blue-500/20 dark:border-blue-400 dark:bg-fuchsia-600/90"
-              : "border-slate-300/80 bg-fuchsia-600/80 text-white hover:bg-fuchsia-600/90 dark:border-slate-700 dark:bg-fuchsia-700/75"
+              ? "border-blue-400 bg-slate-700/95 text-white shadow-md shadow-slate-500/20 dark:border-blue-400 dark:bg-slate-700/95"
+              : "border-slate-300/80 bg-slate-600/85 text-white hover:bg-slate-600/95 dark:border-slate-700 dark:bg-slate-700/80"
           }`}
         >
-          <span className="absolute -left-8 top-2/3 hidden h-20 w-16 rounded-l-full border-l border-y border-slate-300/60 bg-fuchsia-600/90 md:block dark:border-slate-700/60 dark:bg-fuchsia-600/90" />
           <h3 className="text-4xl font-semibold">Сценарии</h3>
           <p className="mt-5 max-w-xs text-sm leading-relaxed text-white/90">
             Обучающие сценарии на реальных ситуациях, которые научат правильно действовать и принимать решения в ТБ.
