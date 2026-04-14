@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useRef, useState, type Dispatch, type SetStateAction } from "react";
+import { API_V1 } from "@/constants/apiV1";
 import type { ChatMessage } from "@/types/chat";
 
 type ChatPanelProps = {
@@ -36,7 +37,7 @@ export function ChatPanel({ messages, setMessages }: ChatPanelProps) {
     requestAnimationFrame(scrollToBottom);
 
     try {
-      const res = await fetch("/api/chat", {
+      const res = await fetch(API_V1.chat, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: nextMessages }),

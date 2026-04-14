@@ -123,7 +123,13 @@ export async function handleChatRequest(req: Request, options?: GatewayOptions) 
   }
 }
 
-export function getGatewayMeta() {
+export type GatewayMeta = {
+  configured: boolean;
+  mode: "mock" | "upstream";
+  models: string[];
+};
+
+export function getGatewayMeta(): GatewayMeta {
   const { baseUrl, models } = getApiConfig();
   return {
     configured: Boolean(baseUrl),
