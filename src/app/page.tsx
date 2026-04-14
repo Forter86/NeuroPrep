@@ -27,9 +27,9 @@ export default function Home() {
   );
 
   return (
-    <div className="relative flex min-h-0 flex-1 flex-col bg-[radial-gradient(ellipse_120%_80%_at_50%_-20%,rgba(59,130,246,0.17),transparent)] dark:bg-[radial-gradient(ellipse_120%_80%_at_50%_-20%,rgba(37,99,235,0.22),transparent)]">
+    <div className="relative flex h-full min-h-0 flex-1 flex-col bg-[radial-gradient(ellipse_120%_80%_at_50%_-20%,rgba(59,130,246,0.17),transparent)] dark:bg-[radial-gradient(ellipse_120%_80%_at_50%_-20%,rgba(37,99,235,0.22),transparent)]">
       <TopNavMenu currentView={view} onSelect={setView} />
-      <header className="border-b border-slate-300/70 bg-slate-50/80 backdrop-blur dark:border-slate-700/70 dark:bg-slate-950/80">
+      <header className="shrink-0 border-b border-slate-300/70 bg-slate-50/80 backdrop-blur dark:border-slate-700/70 dark:bg-slate-950/80">
         <div className="mx-auto flex max-w-3xl flex-col gap-1 px-4 py-6 sm:px-6">
           <p className="text-xs font-semibold uppercase tracking-wider text-blue-700 dark:text-blue-400">
             NeuroPrep
@@ -46,7 +46,7 @@ export default function Home() {
       <main
         className={
           view === "chat"
-            ? "flex min-h-0 w-full flex-1 flex-col py-6 pl-2 pr-4 sm:py-8 sm:pl-3 sm:pr-8 md:pr-10"
+            ? "flex min-h-0 w-full flex-1 flex-col overflow-hidden pt-3 pb-4 pl-2 pr-4 sm:pt-4 sm:pb-5 sm:pl-3 sm:pr-8 md:pr-10"
             : "mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col px-4 py-8 sm:px-6"
         }
       >

@@ -129,14 +129,14 @@ export function ChatWorkspace() {
 
   if (!hydrated || !activeSession) {
     return (
-      <div className="flex flex-1 items-center justify-center text-sm text-slate-500 dark:text-slate-400">
+      <div className="flex h-full min-h-0 flex-1 items-center justify-center text-sm text-slate-500 dark:text-slate-400">
         Загрузка…
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-0 w-full flex-1 flex-col gap-4 sm:min-h-[min(32rem,78vh)] sm:flex-row sm:items-stretch md:gap-5">
+    <div className="flex h-full min-h-0 w-full flex-1 flex-col gap-4 overflow-hidden sm:flex-row sm:items-stretch md:gap-5">
       <ChatSidebar
         sessions={sessions}
         activeId={activeId}
@@ -148,7 +148,7 @@ export function ChatWorkspace() {
         onTogglePin={handleTogglePin}
         onDelete={handleDelete}
       />
-      <div className="min-h-0 min-w-0 flex-1">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
         <ChatPanel key={activeSession.id} messages={activeSession.messages} setMessages={setActiveMessages} />
       </div>
     </div>

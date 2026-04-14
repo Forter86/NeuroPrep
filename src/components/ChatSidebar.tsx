@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { sortSessionsByPinAndRecency } from "@/lib/sortChatSessions";
 import type { ChatSession } from "@/types/chatSession";
 
@@ -51,17 +52,45 @@ export function ChatSidebar({
   onDelete,
 }: ChatSidebarProps) {
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+  const [menuPos, setMenuPos] = useState<{ top: number; left: number } | null>(null);
+  const [portalReady, setPortalReady] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    setPortalReady(true);
+  }, []);
+
+  useEffect(() => {
     if (!openMenuId) return;
-    const onDown = (e: MouseEvent) => {
-      const el = menuRef.current;
-      if (el && !el.contains(e.target as Node)) setOpenMenuId(null);
+    const close = () => {
+      setOpenMenuId(null);
+      setMenuPos(null);
     };
+    const onDown = (e: MouseEvent) => {
+      const t = e.target as Node;
+      if (menuRef.current?.contains(t)) return;
+      if ((t as Element).closest?.("[data-chat-row-menu]")) return;
+      close();
+    };
+    const onScroll = () => close();
     document.addEventListener("mousedown", onDown);
-    return () => document.removeEventListener("mousedown", onDown);
+    window.addEventListener("scroll", onScroll, true);
+    window.addEventListener("resize", close);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      window.removeEventListener("scroll", onScroll, true);
+      window.removeEventListener("resize", close);
+    };
   }, [openMenuId]);
+
+  const menuSession = openMenuId ? sessions.find((x) => x.id === openMenuId) : null;
+
+  useEffect(() => {
+    if (openMenuId && !sessions.some((x) => x.id === openMenuId)) {
+      setOpenMenuId(null);
+      setMenuPos(null);
+    }
+  }, [openMenuId, sessions]);
 
   const q = search.trim().toLowerCase();
   const filtered = q
@@ -85,12 +114,15 @@ export function ChatSidebar({
     (a, b) => maxUpdatedAt(groups.get(b)!) - maxUpdatedAt(groups.get(a)!),
   );
 
+  const menuWidth = 176;
+
   return (
-    <aside className="flex h-full min-h-0 w-full flex-shrink-0 flex-col rounded-2xl border border-slate-300/70 bg-white/90 p-3 shadow-md shadow-slate-900/5 backdrop-blur dark:border-slate-700/70 dark:bg-slate-900/90 sm:w-80 sm:min-w-[20rem] md:w-[22.5rem] md:min-w-[22.5rem] md:p-4">
+    <>
+    <aside className="flex h-full min-h-0 max-h-full w-full max-w-full flex-shrink-0 flex-col self-stretch overflow-hidden rounded-2xl border border-slate-300/70 bg-white/90 p-3 shadow-md shadow-slate-900/5 backdrop-blur dark:border-slate-700/70 dark:bg-slate-900/90 max-sm:max-h-[42vh] sm:h-full sm:max-h-none sm:w-80 sm:min-w-[20rem] md:w-[22.5rem] md:min-w-[22.5rem] md:p-4">
       <button
         type="button"
         onClick={onNewChat}
-        className="flex w-full items-center gap-2 rounded-xl px-2 py-2.5 text-left text-[15px] font-medium text-slate-900 transition hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800/80"
+        className="flex w-full shrink-0 items-center gap-2 rounded-xl px-2 py-2.5 text-left text-[15px] font-medium text-slate-900 transition hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800/80"
       >
         <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-300/80 text-lg leading-none text-slate-700 dark:border-slate-600 dark:text-slate-200">
           +
@@ -98,7 +130,7 @@ export function ChatSidebar({
         Новый чат
       </button>
 
-      <div className="mt-2 flex items-center gap-2 rounded-xl border border-slate-200/80 bg-slate-50/80 px-3 py-2 dark:border-slate-700/80 dark:bg-slate-800/50">
+      <div className="mt-2 flex shrink-0 items-center gap-2 rounded-xl border border-slate-200/80 bg-slate-50/80 px-3 py-2 dark:border-slate-700/80 dark:bg-slate-800/50">
         <span className="text-slate-400" aria-hidden>
           ⌕
         </span>
@@ -112,14 +144,14 @@ export function ChatSidebar({
         />
       </div>
 
-      <div className="mt-3 flex items-center justify-between px-1 text-xs text-slate-500 dark:text-slate-400">
+      <div className="mt-3 flex shrink-0 items-center justify-between px-1 text-xs text-slate-500 dark:text-slate-400">
         <span>Все задачи</span>
         <span className="text-slate-400" title="Сначала закреплённые, затем новые">
           ↓
         </span>
       </div>
 
-      <div className="mt-2 min-h-0 flex-1 space-y-4 overflow-y-auto pr-0.5">
+      <div className="mt-2 min-h-0 flex-1 space-y-4 overflow-y-auto overflow-x-hidden overscroll-y-contain pr-0.5">
         {orderedLabels.length === 0 && (
           <p className="px-1 text-sm text-slate-500 dark:text-slate-400">Нет чатов по запросу</p>
         )}
@@ -149,74 +181,34 @@ export function ChatSidebar({
                       </span>
                     </button>
 
-                    <div className="relative flex shrink-0 flex-col items-center pt-1.5">
+                    <div className="flex shrink-0 flex-col items-center pt-1.5">
                       <button
                         type="button"
+                        data-chat-row-menu
                         aria-expanded={menuOpen}
                         aria-haspopup="menu"
                         onClick={(e) => {
                           e.stopPropagation();
-                          setOpenMenuId((v) => (v === s.id ? null : s.id));
+                          if (openMenuId === s.id) {
+                            setOpenMenuId(null);
+                            setMenuPos(null);
+                            return;
+                          }
+                          const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
+                          const menuApproxH = 148;
+                          const left = Math.max(8, Math.min(r.right - menuWidth, window.innerWidth - menuWidth - 8));
+                          let top = r.bottom + 4;
+                          if (top + menuApproxH > window.innerHeight - 8) {
+                            top = Math.max(8, r.top - menuApproxH - 4);
+                          }
+                          setOpenMenuId(s.id);
+                          setMenuPos({ top, left });
                         }}
                         className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-200/80 hover:text-slate-800 dark:text-slate-400 dark:hover:bg-slate-700/80 dark:hover:text-slate-100"
                         title="Действия"
                       >
                         <span className="text-lg leading-none">⋯</span>
                       </button>
-
-                      {menuOpen && (
-                        <div
-                          ref={menuRef}
-                          role="menu"
-                          className="absolute right-0 top-9 z-50 w-44 rounded-xl border border-slate-200/90 bg-white py-1 shadow-lg shadow-slate-900/15 dark:border-slate-600 dark:bg-slate-900"
-                        >
-                          <button
-                            type="button"
-                            role="menuitem"
-                            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-slate-800 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"
-                            onClick={() => {
-                              const next = window.prompt("Новое название чата", s.title);
-                              setOpenMenuId(null);
-                              if (next === null) return;
-                              onRename(s.id, next);
-                            }}
-                          >
-                            <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-                              <path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
-                            </svg>
-                            Переименовать
-                          </button>
-                          <button
-                            type="button"
-                            role="menuitem"
-                            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-slate-800 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"
-                            onClick={() => {
-                              onTogglePin(s.id);
-                              setOpenMenuId(null);
-                            }}
-                          >
-                            <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-                              <path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z" />
-                              <circle cx="12" cy="10" r="2" fill="currentColor" stroke="none" />
-                            </svg>
-                            {s.pinned ? "Открепить" : "Закрепить"}
-                          </button>
-                          <button
-                            type="button"
-                            role="menuitem"
-                            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40"
-                            onClick={() => {
-                              onDelete(s.id);
-                              setOpenMenuId(null);
-                            }}
-                          >
-                            <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-                              <path d="M3 6h18M8 6V4h8v2M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M10 11v6M14 11v6" />
-                            </svg>
-                            Удалить
-                          </button>
-                        </div>
-                      )}
                     </div>
                   </li>
                 );
@@ -235,5 +227,68 @@ export function ChatSidebar({
         </div>
       </div>
     </aside>
+
+    {portalReady &&
+      menuSession &&
+      menuPos &&
+      createPortal(
+        <div
+          ref={menuRef}
+          role="menu"
+          style={{ top: menuPos.top, left: menuPos.left }}
+          className="fixed z-[100] w-44 rounded-xl border border-slate-200/90 bg-white py-1 shadow-lg shadow-slate-900/20 dark:border-slate-600 dark:bg-slate-900"
+        >
+          <button
+            type="button"
+            role="menuitem"
+            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-slate-800 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"
+            onClick={() => {
+              const next = window.prompt("Новое название чата", menuSession.title);
+              setOpenMenuId(null);
+              setMenuPos(null);
+              if (next === null) return;
+              onRename(menuSession.id, next);
+            }}
+          >
+            <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+              <path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+            </svg>
+            Переименовать
+          </button>
+          <button
+            type="button"
+            role="menuitem"
+            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-slate-800 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"
+            onClick={() => {
+              onTogglePin(menuSession.id);
+              setOpenMenuId(null);
+              setMenuPos(null);
+            }}
+          >
+            <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+              <path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11z" />
+              <circle cx="12" cy="10" r="2" fill="currentColor" stroke="none" />
+            </svg>
+            {menuSession.pinned ? "Открепить" : "Закрепить"}
+          </button>
+          <button
+            type="button"
+            role="menuitem"
+            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40"
+            onClick={() => {
+              onDelete(menuSession.id);
+              setOpenMenuId(null);
+              setMenuPos(null);
+            }}
+          >
+            <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+              <path d="M3 6h18M8 6V4h8v2M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M10 11v6M14 11v6" />
+            </svg>
+            Удалить
+          </button>
+        </div>,
+        document.body,
+      )}
+    </>
   );
 }

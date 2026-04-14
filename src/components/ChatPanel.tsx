@@ -64,8 +64,8 @@ export function ChatPanel({ messages, setMessages }: ChatPanelProps) {
   }, [input, loading, messages, setMessages, scrollToBottom]);
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col rounded-2xl border border-slate-300/70 bg-white/85 shadow-lg shadow-slate-900/5 backdrop-blur dark:border-slate-700/70 dark:bg-slate-900/85">
-      <div className="min-h-[min(300px,50vh)] max-h-[min(560px,72vh)] flex-1 space-y-3 overflow-y-auto p-4 sm:min-h-[min(340px,54vh)] sm:p-5">
+    <div className="flex h-full min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-slate-300/70 bg-white/85 shadow-lg shadow-slate-900/5 backdrop-blur dark:border-slate-700/70 dark:bg-slate-900/85">
+      <div className="min-h-0 flex-1 space-y-3 overflow-y-auto overflow-x-hidden overscroll-y-contain p-4 sm:p-5">
         {messages.map((m, i) => (
           <div
             key={i}
@@ -87,12 +87,12 @@ export function ChatPanel({ messages, setMessages }: ChatPanelProps) {
       </div>
 
       {error && (
-        <div className="border-t border-red-200 bg-red-50 px-4 py-2 text-sm text-red-800 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-200">
+        <div className="shrink-0 border-t border-red-200 bg-red-50 px-4 py-2 text-sm text-red-800 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-200">
           {error}
         </div>
       )}
 
-      <div className="flex gap-2 border-t border-slate-300/70 p-3 sm:p-4 dark:border-slate-700/70">
+      <div className="flex shrink-0 gap-2 border-t border-slate-300/70 p-3 sm:p-4 dark:border-slate-700/70">
         <input
           type="text"
           value={input}
