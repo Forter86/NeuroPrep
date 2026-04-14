@@ -19,7 +19,7 @@ export default function Home() {
 
   const subtitleByView = useMemo(
     () => ({
-      chat: "Задавай вопросы по охране труда — когда будет готов API нейросети, ответы пойдут с бэкенда. Пока без",
+      chat: "Задавай вопросы по охране труда и технике безопасности: нормы, СИЗ, действия в нештатных ситуациях — разберём по шагам.",
       learning: "Выбери формат обучения: адаптивные тесты или практические сценарии на реальных ситуациях.",
       analytics: "Отслеживай прогресс, слабые места и динамику знаний в сфере ТБ.",
     }),
@@ -38,20 +38,18 @@ export default function Home() {
             {titleByView[view]}
           </h1>
           <p className="max-w-xl text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-400">
-            {subtitleByView[view]}{" "}
-            {view === "chat" && (
-              <>
-                <code className="rounded bg-blue-100 px-1.5 py-0.5 font-mono text-sm text-blue-950 dark:bg-blue-950/60 dark:text-blue-100">
-                  NEUROPREP_API_URL
-                </code>{" "}
-                работает демо-режим.
-              </>
-            )}
+            {subtitleByView[view]}
           </p>
         </div>
       </header>
 
-      <main className="mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col px-4 py-8 sm:px-6">
+      <main
+        className={
+          view === "chat"
+            ? "flex min-h-0 w-full flex-1 flex-col py-6 pl-2 pr-4 sm:py-8 sm:pl-3 sm:pr-8 md:pr-10"
+            : "mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col px-4 py-8 sm:px-6"
+        }
+      >
         {view === "chat" && <ChatWorkspace />}
         {view === "learning" && <LearningPathSelector />}
         {view === "analytics" && (

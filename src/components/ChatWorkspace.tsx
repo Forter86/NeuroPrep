@@ -136,7 +136,7 @@ export function ChatWorkspace() {
   }
 
   return (
-    <div className="flex min-h-0 w-full flex-1 flex-col gap-3 sm:flex-row sm:items-stretch">
+    <div className="flex min-h-0 w-full flex-1 flex-col gap-4 sm:min-h-[min(32rem,78vh)] sm:flex-row sm:items-stretch md:gap-5">
       <ChatSidebar
         sessions={sessions}
         activeId={activeId}

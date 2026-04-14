@@ -18,17 +18,10 @@ function getApiConfig() {
 }
 
 function mockReply(userText: string): string {
-  const trimmed = userText.trim();
-  if (!trimmed) {
-    return "Напиши вопрос по охране труда или технике безопасности — подскажу, на что обратить внимание.";
+  if (!userText.trim()) {
+    return "Напиши, что тебя волнует по охране труда или на работе — как только смогу отвечать в полном режиме, разберём это спокойно и по шагам.";
   }
-  return [
-    "Сейчас подключен демо-режим (upstream API не задан).",
-    "",
-    `Твой вопрос: «${trimmed.slice(0, 200)}${trimmed.length > 200 ? "..." : ""}»`,
-    "",
-    "Когда будет готов бэкенд, задай NEUROPREP_API_URL и при необходимости NEUROPREP_API_KEY.",
-  ].join("\n");
+  return "Привет! Я пока не умею отвечать на вопросы, но очень скоро научусь — и вместе мы разберёмся со всеми твоими вопросами по ТБ.";
 }
 
 export function validateChatBody(body: unknown): { ok: true; value: ChatRequestBody } | { ok: false; error: string } {

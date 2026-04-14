@@ -65,7 +65,7 @@ export function ChatPanel({ messages, setMessages }: ChatPanelProps) {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col rounded-2xl border border-slate-300/70 bg-white/85 shadow-lg shadow-slate-900/5 backdrop-blur dark:border-slate-700/70 dark:bg-slate-900/85">
-      <div className="max-h-[min(520px,70vh)] flex-1 space-y-3 overflow-y-auto p-4 sm:p-5">
+      <div className="min-h-[min(300px,50vh)] max-h-[min(560px,72vh)] flex-1 space-y-3 overflow-y-auto p-4 sm:min-h-[min(340px,54vh)] sm:p-5">
         {messages.map((m, i) => (
           <div
             key={i}

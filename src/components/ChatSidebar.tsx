@@ -86,7 +86,7 @@ export function ChatSidebar({
   );
 
   return (
-    <aside className="flex h-full min-h-0 w-full max-w-[17.5rem] flex-shrink-0 flex-col rounded-2xl border border-slate-300/70 bg-white/90 p-3 shadow-md shadow-slate-900/5 backdrop-blur dark:border-slate-700/70 dark:bg-slate-900/90 sm:max-w-[18rem]">
+    <aside className="flex h-full min-h-0 w-full flex-shrink-0 flex-col rounded-2xl border border-slate-300/70 bg-white/90 p-3 shadow-md shadow-slate-900/5 backdrop-blur dark:border-slate-700/70 dark:bg-slate-900/90 sm:w-80 sm:min-w-[20rem] md:w-[22.5rem] md:min-w-[22.5rem] md:p-4">
       <button
         type="button"
         onClick={onNewChat}
