@@ -87,16 +87,16 @@ export function ChatPanel({ messages, setMessages, variant = "desktop" }: ChatPa
     >
       <div
         className={`min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-y-contain ${
-          isMobile ? "touch-pan-y px-3 py-4 [-webkit-overflow-scrolling:touch]" : "space-y-3 p-4 sm:p-5"
+          isMobile ? "touch-pan-y px-3 py-2 [-webkit-overflow-scrolling:touch]" : "space-y-3 p-4 sm:p-5"
         } ${!isMobile ? "space-y-3" : ""}`}
       >
         {showWelcome ? (
-          <div className="flex h-full min-h-[12rem] flex-col items-center justify-center px-4 text-center">
-            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-2xl font-bold text-white shadow-md shadow-blue-500/25">
+          <div className="flex min-h-0 flex-1 flex-col items-center justify-center px-3 py-2 text-center">
+            <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-lg font-bold text-white shadow-md shadow-blue-500/20">
               N
             </div>
-            <h2 className="text-xl font-semibold text-slate-900">Чем могу помочь?</h2>
-            <p className="mt-2 max-w-xs text-sm leading-relaxed text-slate-500">
+            <h2 className="text-lg font-semibold text-slate-900">Чем могу помочь?</h2>
+            <p className="mt-1.5 max-w-[16rem] text-[13px] leading-snug text-slate-500">
               Спроси про СИЗ, нормы ТБ или действия в нештатной ситуации.
             </p>
           </div>
@@ -143,7 +143,7 @@ export function ChatPanel({ messages, setMessages, variant = "desktop" }: ChatPa
       <div
         className={
           isMobile
-            ? "shrink-0 border-t border-slate-200/80 bg-white px-3 py-3"
+            ? "shrink-0 border-t border-slate-200/80 bg-white px-2.5 py-2"
             : "flex shrink-0 gap-2 border-t border-slate-300/70 p-3 sm:p-4"
         }
       >

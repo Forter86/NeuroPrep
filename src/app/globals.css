@@ -3,7 +3,7 @@
 :root {
   --background: #f3f7fc;
   --foreground: #0f172a;
-  --mobile-nav-height: 3.75rem;
+  --mobile-nav-height: 3.25rem;
 }
 
 @theme inline {
@@ -27,11 +27,17 @@ body {
 @media (max-width: 767px) {
   html,
   body {
-    height: 100dvh;
-    max-height: 100dvh;
+    height: 100svh;
+    max-height: 100svh;
     overflow: hidden;
     overscroll-behavior: none;
+    touch-action: manipulation;
   }
+}
+
+.mobile-app-shell {
+  height: 100svh;
+  max-height: 100svh;
 }
 
 @media (min-width: 768px) {
