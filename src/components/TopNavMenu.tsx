@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 
-export type ModuleView = "chat" | "learning" | "analytics";
+import type { DesktopModuleView } from "@/types/appTab";
+
+export type ModuleView = DesktopModuleView;
 
 type MenuItem = {
   id: ModuleView;
@@ -49,20 +51,20 @@ export function TopNavMenu({ currentView, onSelect }: TopNavMenuProps) {
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-controls="top-nav-menu-dropdown"
-          className="group flex h-11 w-11 items-center justify-center rounded-xl border border-slate-300/80 bg-white/90 shadow-sm shadow-slate-900/10 backdrop-blur transition hover:border-blue-400/70 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:border-slate-700/80 dark:bg-slate-900/90 dark:hover:border-blue-500/60 dark:hover:bg-slate-800"
+          className="group flex h-11 w-11 items-center justify-center rounded-xl border border-slate-300/80 bg-white/90 shadow-sm shadow-slate-900/10 backdrop-blur transition hover:border-blue-400/70 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500/40"
         >
           <span className="sr-only">Открыть меню</span>
           <span className="flex w-5 flex-col gap-1">
-            <span className="h-0.5 rounded bg-slate-700 transition group-hover:bg-blue-600 dark:bg-slate-200 dark:group-hover:bg-blue-400" />
-            <span className="h-0.5 rounded bg-slate-700 transition group-hover:bg-blue-600 dark:bg-slate-200 dark:group-hover:bg-blue-400" />
-            <span className="h-0.5 rounded bg-slate-700 transition group-hover:bg-blue-600 dark:bg-slate-200 dark:group-hover:bg-blue-400" />
+            <span className="h-0.5 rounded bg-slate-700 transition group-hover:bg-blue-600" />
+            <span className="h-0.5 rounded bg-slate-700 transition group-hover:bg-blue-600" />
+            <span className="h-0.5 rounded bg-slate-700 transition group-hover:bg-blue-600" />
           </span>
         </button>
 
         {open && (
           <div
             id="top-nav-menu-dropdown"
-            className={`mt-2 grid gap-2 rounded-2xl border border-slate-300/80 bg-white/95 p-2 shadow-lg shadow-slate-900/10 backdrop-blur dark:border-slate-700/80 dark:bg-slate-900/95 ${
+            className={`mt-2 grid gap-2 rounded-2xl border border-slate-300/80 bg-white/95 p-2 shadow-lg shadow-slate-900/10 backdrop-blur ${
               hoveredItem
                 ? "w-[min(90vw,620px)] grid-cols-1 sm:grid-cols-[220px_1fr]"
                 : "w-[min(90vw,240px)] grid-cols-1"
@@ -84,8 +86,8 @@ export function TopNavMenu({ currentView, onSelect }: TopNavMenuProps) {
                       onFocus={() => setHoveredId(item.id)}
                       className={`w-full rounded-xl px-3 py-2 text-left text-sm transition ${
                         active || selected
-                          ? "bg-blue-100 text-blue-900 dark:bg-blue-900/30 dark:text-blue-100"
-                          : "text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800/80"
+                          ? "bg-blue-100 text-blue-900"
+                          : "text-slate-700 hover:bg-slate-100"
                       }`}
                     >
                       {item.label}
@@ -96,7 +98,7 @@ export function TopNavMenu({ currentView, onSelect }: TopNavMenuProps) {
             </ul>
 
             {hoveredItem && (
-              <div className="rounded-xl border border-slate-200/70 bg-slate-100/60 px-4 py-3 text-sm leading-relaxed text-slate-700 backdrop-blur-sm dark:border-slate-700/70 dark:bg-slate-800/50 dark:text-slate-200">
+              <div className="rounded-xl border border-slate-200/70 bg-slate-100/60 px-4 py-3 text-sm leading-relaxed text-slate-700 backdrop-blur-sm">
                 {hoveredItem.description}
               </div>
             )}

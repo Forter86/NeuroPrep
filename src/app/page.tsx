@@ -3,10 +3,14 @@
 import { useMemo, useState } from "react";
 import { ChatWorkspace } from "@/components/ChatWorkspace";
 import { LearningPathSelector } from "@/components/LearningPathSelector";
-import { TopNavMenu, type ModuleView } from "@/components/TopNavMenu";
+import { MobileBottomNav } from "@/components/MobileBottomNav";
+import { MobilePlaceholder } from "@/components/MobilePlaceholder";
+import { TopNavMenu } from "@/components/TopNavMenu";
+import type { AppTab, DesktopModuleView } from "@/types/appTab";
 
 export default function Home() {
-  const [view, setView] = useState<ModuleView>("chat");
+  const [mobileTab, setMobileTab] = useState<AppTab>("chat");
+  const [desktopView, setDesktopView] = useState<DesktopModuleView>("chat");
 
   const titleByView = useMemo(
     () => ({
@@ -27,40 +31,76 @@ export default function Home() {
   );
 
   return (
-    <div className="relative flex h-full min-h-0 flex-1 flex-col bg-[radial-gradient(ellipse_120%_80%_at_50%_-20%,rgba(59,130,246,0.17),transparent)] dark:bg-[radial-gradient(ellipse_120%_80%_at_50%_-20%,rgba(37,99,235,0.22),transparent)]">
-      <TopNavMenu currentView={view} onSelect={setView} />
-      <header className="shrink-0 border-b border-slate-300/70 bg-slate-50/80 backdrop-blur dark:border-slate-700/70 dark:bg-slate-950/80">
-        <div className="mx-auto flex max-w-3xl flex-col gap-1 px-4 py-6 sm:px-6">
-          <p className="text-xs font-semibold uppercase tracking-wider text-blue-700 dark:text-blue-400">
-            NeuroPrep
-          </p>
-          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-3xl">
-            {titleByView[view]}
-          </h1>
-          <p className="max-w-xl text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-400">
-            {subtitleByView[view]}
-          </p>
-        </div>
-      </header>
+    <>
+      {/* Desktop */}
+      <div className="relative hidden h-full min-h-0 flex-1 flex-col bg-[radial-gradient(ellipse_120%_80%_at_50%_-20%,rgba(59,130,246,0.17),transparent)] md:flex">
+        <TopNavMenu currentView={desktopView} onSelect={setDesktopView} />
+        <header className="shrink-0 border-b border-slate-300/70 bg-slate-50/80 backdrop-blur">
+          <div className="mx-auto flex max-w-3xl flex-col gap-1 px-4 py-6 sm:px-6">
+            <p className="text-xs font-semibold uppercase tracking-wider text-blue-700">NeuroPrep</p>
+            <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
+              {titleByView[desktopView]}
+            </h1>
+            <p className="max-w-xl text-[15px] leading-relaxed text-zinc-600">{subtitleByView[desktopView]}</p>
+          </div>
+        </header>
 
-      <main
-        className={
-          view === "chat"
-            ? "flex min-h-0 w-full flex-1 flex-col overflow-hidden pt-3 pb-4 pl-2 pr-4 sm:pt-4 sm:pb-5 sm:pl-3 sm:pr-8 md:pr-10"
-            : "mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col px-4 py-8 sm:px-6"
-        }
-      >
-        {view === "chat" && <ChatWorkspace />}
-        {view === "learning" && <LearningPathSelector />}
-        {view === "analytics" && (
-          <section className="mx-auto w-full max-w-4xl rounded-3xl border border-slate-300/70 bg-white/80 p-6 shadow-lg shadow-slate-900/5 backdrop-blur dark:border-slate-700/70 dark:bg-slate-900/80">
-            <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">Аналитика обучения</h2>
-            <p className="mt-3 text-slate-600 dark:text-slate-300">
-              Здесь будет дашборд с результатами: процент правильных ответов, темы с рисками и персональные рекомендации.
-            </p>
-          </section>
-        )}
-      </main>
-    </div>
+        <main
+          className={
+            desktopView === "chat"
+              ? "flex min-h-0 w-full flex-1 flex-col overflow-hidden pt-3 pb-4 pl-2 pr-4 sm:pt-4 sm:pb-5 sm:pl-3 sm:pr-8 md:pr-10"
+              : "mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col px-4 py-8 sm:px-6"
+          }
+        >
+          {desktopView === "chat" && <ChatWorkspace layout="desktop" />}
+          {desktopView === "learning" && <LearningPathSelector />}
+          {desktopView === "analytics" && (
+            <section className="mx-auto w-full max-w-4xl rounded-3xl border border-slate-300/70 bg-white/80 p-6 shadow-lg shadow-slate-900/5 backdrop-blur">
+              <h2 className="text-2xl font-semibold text-slate-900">Аналитика обучения</h2>
+              <p className="mt-3 text-slate-600">
+                Здесь будет дашборд с результатами: процент правильных ответов, темы с рисками и персональные
+                рекомендации.
+              </p>
+            </section>
+          )}
+        </main>
+      </div>
+
+      {/* Mobile */}
+      <div className="flex h-[100dvh] min-h-0 flex-col overflow-hidden bg-[#f3f7fc] md:hidden">
+        <main className="min-h-0 flex-1 overflow-hidden">
+          {mobileTab === "chat" && <ChatWorkspace layout="mobile" />}
+          {mobileTab === "tests" && (
+            <MobilePlaceholder
+              title="Тесты"
+              subtitle="Проверка знаний по охране труда"
+              placeholder="Здесь будут тесты и практика по технике безопасности"
+            />
+          )}
+          {mobileTab === "scenarios" && (
+            <MobilePlaceholder
+              title="Сценарии"
+              subtitle="Практика на реальных ситуациях"
+              placeholder="Здесь будут обучающие сценарии"
+            />
+          )}
+          {mobileTab === "analytics" && (
+            <MobilePlaceholder
+              title="Аналитика"
+              subtitle="Прогресс и статистика обучения"
+              placeholder="Здесь будет статистика и аналитика"
+            />
+          )}
+          {mobileTab === "profile" && (
+            <MobilePlaceholder
+              title="Профиль"
+              subtitle="Ваш аккаунт и настройки"
+              placeholder="Здесь будет профиль"
+            />
+          )}
+        </main>
+        <MobileBottomNav current={mobileTab} onSelect={setMobileTab} />
+      </div>
+    </>
   );
 }

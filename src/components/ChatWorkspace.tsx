@@ -4,8 +4,10 @@ import { useCallback, useEffect, useMemo, useState, type SetStateAction } from "
 import { CHAT_INTRO_MESSAGE } from "@/constants/chatIntro";
 import { loadChatSessions, saveChatSessions } from "@/lib/chatSessionsStorage";
 import { sortSessionsByPinAndRecency } from "@/lib/sortChatSessions";
+import { ChatDrawer } from "@/components/ChatDrawer";
 import { ChatPanel } from "@/components/ChatPanel";
 import { ChatSidebar } from "@/components/ChatSidebar";
+import { MobileChatHeader } from "@/components/MobileChatHeader";
 import type { ChatMessage } from "@/types/chat";
 import type { ChatSession } from "@/types/chatSession";
 
@@ -31,11 +33,17 @@ function titleFromMessages(messages: ChatMessage[]): string {
   return t.length > 40 ? `${t.slice(0, 37)}…` : t;
 }
 
-export function ChatWorkspace() {
+type ChatWorkspaceProps = {
+  layout?: "desktop" | "mobile";
+};
+
+export function ChatWorkspace({ layout = "desktop" }: ChatWorkspaceProps) {
+  const isMobile = layout === "mobile";
   const [sessions, setSessions] = useState<ChatSession[]>([]);
   const [activeId, setActiveId] = useState<string>("");
   const [search, setSearch] = useState("");
   const [hydrated, setHydrated] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
     const stored = loadChatSessions();
@@ -127,27 +135,44 @@ export function ChatWorkspace() {
     });
   }, []);
 
+  const sidebarProps = {
+    sessions,
+    activeId,
+    search,
+    onSearchChange: setSearch,
+    onNewChat: handleNewChat,
+    onSelect: setActiveId,
+    onRename: handleRename,
+    onTogglePin: handleTogglePin,
+    onDelete: handleDelete,
+  };
+
   if (!hydrated || !activeSession) {
     return (
-      <div className="flex h-full min-h-0 flex-1 items-center justify-center text-sm text-slate-500 dark:text-slate-400">
+      <div className="flex h-full min-h-0 flex-1 items-center justify-center text-sm text-slate-500">
         Загрузка…
+      </div>
+    );
+  }
+
+  if (isMobile) {
+    return (
+      <div className="flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden bg-white">
+        <MobileChatHeader title={activeSession.title} onOpenMenu={() => setDrawerOpen(true)} />
+        <ChatPanel
+          key={activeSession.id}
+          variant="mobile"
+          messages={activeSession.messages}
+          setMessages={setActiveMessages}
+        />
+        <ChatDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} {...sidebarProps} />
       </div>
     );
   }
 
   return (
     <div className="flex h-full min-h-0 w-full flex-1 flex-col gap-4 overflow-hidden sm:flex-row sm:items-stretch md:gap-5">
-      <ChatSidebar
-        sessions={sessions}
-        activeId={activeId}
-        search={search}
-        onSearchChange={setSearch}
-        onNewChat={handleNewChat}
-        onSelect={setActiveId}
-        onRename={handleRename}
-        onTogglePin={handleTogglePin}
-        onDelete={handleDelete}
-      />
+      <ChatSidebar {...sidebarProps} />
       <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
         <ChatPanel key={activeSession.id} messages={activeSession.messages} setMessages={setActiveMessages} />
       </div>

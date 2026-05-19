@@ -29,6 +29,7 @@ function maxUpdatedAt(list: ChatSession[]) {
 }
 
 type ChatSidebarProps = {
+  variant?: "inline" | "drawer";
   sessions: ChatSession[];
   activeId: string;
   search: string;
@@ -41,6 +42,7 @@ type ChatSidebarProps = {
 };
 
 export function ChatSidebar({
+  variant = "inline",
   sessions,
   activeId,
   search,
@@ -51,6 +53,7 @@ export function ChatSidebar({
   onTogglePin,
   onDelete,
 }: ChatSidebarProps) {
+  const isDrawer = variant === "drawer";
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const [menuPos, setMenuPos] = useState<{ top: number; left: number } | null>(null);
   const [portalReady, setPortalReady] = useState(false);
@@ -118,19 +121,25 @@ export function ChatSidebar({
 
   return (
     <>
-    <aside className="flex h-full min-h-0 max-h-full w-full max-w-full flex-shrink-0 flex-col self-stretch overflow-hidden rounded-2xl border border-slate-300/70 bg-white/90 p-3 shadow-md shadow-slate-900/5 backdrop-blur dark:border-slate-700/70 dark:bg-slate-900/90 max-sm:max-h-[42vh] sm:h-full sm:max-h-none sm:w-80 sm:min-w-[20rem] md:w-[22.5rem] md:min-w-[22.5rem] md:p-4">
+    <aside
+      className={
+        isDrawer
+          ? "flex h-full min-h-0 w-full flex-col overflow-hidden p-4"
+          : "flex h-full min-h-0 max-h-full w-full max-w-full flex-shrink-0 flex-col self-stretch overflow-hidden rounded-2xl border border-slate-300/70 bg-white/90 p-3 shadow-md shadow-slate-900/5 backdrop-blur max-sm:max-h-[42vh] sm:h-full sm:max-h-none sm:w-80 sm:min-w-[20rem] md:w-[22.5rem] md:min-w-[22.5rem] md:p-4"
+      }
+    >
       <button
         type="button"
         onClick={onNewChat}
-        className="flex w-full shrink-0 items-center gap-2 rounded-xl px-2 py-2.5 text-left text-[15px] font-medium text-slate-900 transition hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800/80"
+        className="flex w-full shrink-0 items-center gap-2 rounded-xl px-2 py-2.5 text-left text-[15px] font-medium text-slate-900 transition hover:bg-slate-100"
       >
-        <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-300/80 text-lg leading-none text-slate-700 dark:border-slate-600 dark:text-slate-200">
+        <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-300/80 text-lg leading-none text-slate-700">
           +
         </span>
         Новый чат
       </button>
 
-      <div className="mt-2 flex shrink-0 items-center gap-2 rounded-xl border border-slate-200/80 bg-slate-50/80 px-3 py-2 dark:border-slate-700/80 dark:bg-slate-800/50">
+      <div className="mt-2 flex shrink-0 items-center gap-2 rounded-xl border border-slate-200/80 bg-slate-50/80 px-3 py-2">
         <span className="text-slate-400" aria-hidden>
           ⌕
         </span>
@@ -139,12 +148,12 @@ export function ChatSidebar({
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
           placeholder="Поиск в чатах"
-          className="min-w-0 flex-1 bg-transparent text-sm text-slate-800 outline-none placeholder:text-slate-400 dark:text-slate-100 dark:placeholder:text-slate-500"
+          className="min-w-0 flex-1 bg-transparent text-sm text-slate-800 outline-none placeholder:text-slate-400"
           autoComplete="off"
         />
       </div>
 
-      <div className="mt-3 flex shrink-0 items-center justify-between px-1 text-xs text-slate-500 dark:text-slate-400">
+      <div className="mt-3 flex shrink-0 items-center justify-between px-1 text-xs text-slate-500">
         <span>Все задачи</span>
         <span className="text-slate-400" title="Сначала закреплённые, затем новые">
           ↓
@@ -153,11 +162,11 @@ export function ChatSidebar({
 
       <div className="mt-2 min-h-0 flex-1 space-y-4 overflow-y-auto overflow-x-hidden overscroll-y-contain pr-0.5">
         {orderedLabels.length === 0 && (
-          <p className="px-1 text-sm text-slate-500 dark:text-slate-400">Нет чатов по запросу</p>
+          <p className="px-1 text-sm text-slate-500">Нет чатов по запросу</p>
         )}
         {orderedLabels.map((label) => (
           <div key={label}>
-            <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">
+            <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-wide text-slate-400">
               {label}
             </p>
             <ul className="space-y-1">
@@ -171,12 +180,12 @@ export function ChatSidebar({
                       onClick={() => onSelect(s.id)}
                       className={`min-w-0 flex-1 rounded-xl py-2.5 pl-3 pr-2 text-left transition ${
                         active
-                          ? "bg-indigo-100/90 text-indigo-950 dark:bg-indigo-950/50 dark:text-indigo-100"
-                          : "text-slate-800 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800/70"
+                          ? "bg-indigo-100/90 text-indigo-950"
+                          : "text-slate-800 hover:bg-slate-100"
                       }`}
                     >
                       <span className="line-clamp-2 text-sm font-medium">{s.title}</span>
-                      <span className="mt-0.5 block text-[11px] text-slate-500 dark:text-slate-400">
+                      <span className="mt-0.5 block text-[11px] text-slate-500">
                         NeuroPrep / main
                       </span>
                     </button>
@@ -204,7 +213,7 @@ export function ChatSidebar({
                           setOpenMenuId(s.id);
                           setMenuPos({ top, left });
                         }}
-                        className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-200/80 hover:text-slate-800 dark:text-slate-400 dark:hover:bg-slate-700/80 dark:hover:text-slate-100"
+                        className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-200/80 hover:text-slate-800"
                         title="Действия"
                       >
                         <span className="text-lg leading-none">⋯</span>
@@ -218,12 +227,12 @@ export function ChatSidebar({
         ))}
       </div>
 
-      <div className="mt-3 flex shrink-0 items-center gap-3 border-t border-slate-200/80 pt-3 dark:border-slate-700/80">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-600 text-sm font-semibold text-white dark:bg-slate-500">
+      <div className="mt-3 flex shrink-0 items-center gap-3 border-t border-slate-200/80 pt-3">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-600 text-sm font-semibold text-white">
           Г
         </div>
         <div className="min-w-0">
-          <p className="truncate text-sm font-medium text-slate-900 dark:text-slate-100">Гость</p>
+          <p className="truncate text-sm font-medium text-slate-900">Гость</p>
         </div>
       </div>
     </aside>
@@ -236,12 +245,12 @@ export function ChatSidebar({
           ref={menuRef}
           role="menu"
           style={{ top: menuPos.top, left: menuPos.left }}
-          className="fixed z-[100] w-44 rounded-xl border border-slate-200/90 bg-white py-1 shadow-lg shadow-slate-900/20 dark:border-slate-600 dark:bg-slate-900"
+          className="fixed z-[100] w-44 rounded-xl border border-slate-200/90 bg-white py-1 shadow-lg shadow-slate-900/20"
         >
           <button
             type="button"
             role="menuitem"
-            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-slate-800 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"
+            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-slate-800 hover:bg-slate-100"
             onClick={() => {
               const next = window.prompt("Новое название чата", menuSession.title);
               setOpenMenuId(null);
@@ -258,7 +267,7 @@ export function ChatSidebar({
           <button
             type="button"
             role="menuitem"
-            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-slate-800 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"
+            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-slate-800 hover:bg-slate-100"
             onClick={() => {
               onTogglePin(menuSession.id);
               setOpenMenuId(null);
@@ -274,7 +283,7 @@ export function ChatSidebar({
           <button
             type="button"
             role="menuitem"
-            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40"
+            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
             onClick={() => {
               onDelete(menuSession.id);
               setOpenMenuId(null);
