@@ -87,7 +87,7 @@ export function ChatPanel({ messages, setMessages, variant = "desktop" }: ChatPa
     >
       <div
         className={`min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-y-contain ${
-          isMobile ? "px-3 py-4" : "space-y-3 p-4 sm:p-5"
+          isMobile ? "touch-pan-y px-3 py-4 [-webkit-overflow-scrolling:touch]" : "space-y-3 p-4 sm:p-5"
         } ${!isMobile ? "space-y-3" : ""}`}
       >
         {showWelcome ? (
@@ -146,7 +146,6 @@ export function ChatPanel({ messages, setMessages, variant = "desktop" }: ChatPa
             ? "shrink-0 border-t border-slate-200/80 bg-white px-3 py-3"
             : "flex shrink-0 gap-2 border-t border-slate-300/70 p-3 sm:p-4"
         }
-        style={isMobile ? { paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" } : undefined}
       >
         {isMobile ? (
           <div className="flex items-end gap-2 rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-2 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-500/20">
