@@ -157,7 +157,7 @@ export function ChatWorkspace({ layout = "desktop" }: ChatWorkspaceProps) {
 
   if (isMobile) {
     return (
-      <div className="flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden bg-white">
+      <div className="flex h-full min-h-0 w-full max-w-full flex-1 flex-col overflow-hidden overflow-x-clip bg-white">
         <MobileChatHeader title={activeSession.title} onOpenMenu={() => setDrawerOpen(true)} />
         <ChatPanel
           key={activeSession.id}
@@ -171,7 +171,7 @@ export function ChatWorkspace({ layout = "desktop" }: ChatWorkspaceProps) {
   }
 
   return (
-    <div className="flex h-full min-h-0 w-full flex-1 flex-col gap-4 overflow-hidden sm:flex-row sm:items-stretch md:gap-5">
+    <div className="flex h-full max-h-full min-h-0 w-full flex-1 flex-col gap-4 overflow-hidden sm:flex-row sm:items-stretch md:gap-5">
       <ChatSidebar {...sidebarProps} />
       <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
         <ChatPanel key={activeSession.id} messages={activeSession.messages} setMessages={setActiveMessages} />

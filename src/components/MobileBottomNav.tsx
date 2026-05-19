@@ -24,15 +24,15 @@ type MobileBottomNavProps = {
 export function MobileBottomNav({ current, onSelect }: MobileBottomNavProps) {
   return (
     <nav
-      className="shrink-0 border-t border-slate-200/90 bg-white/95 shadow-[0_-4px_16px_rgba(15,23,42,0.05)] backdrop-blur-md"
+      className="w-full max-w-full shrink-0 overflow-x-clip border-t border-slate-200/90 bg-white/95 shadow-[0_-4px_16px_rgba(15,23,42,0.05)] backdrop-blur-md"
       style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
       aria-label="Основная навигация"
     >
-      <ul className="flex items-stretch justify-around px-0.5 pt-0.5">
+      <ul className="flex w-full min-w-0 items-stretch justify-around px-0.5 pt-0.5">
         {TABS.map((tab) => {
           const active = current === tab.id;
           return (
-            <li key={tab.id} className="flex-1">
+            <li key={tab.id} className="min-w-0 flex-1">
               <button
                 type="button"
                 onClick={() => onSelect(tab.id)}
@@ -48,7 +48,9 @@ export function MobileBottomNav({ current, onSelect }: MobileBottomNavProps) {
                   height={26}
                   className={`h-[22px] w-[22px] object-contain ${active ? "opacity-100" : "opacity-55"}`}
                 />
-                <span className={`text-[10px] leading-tight ${active ? "font-semibold" : "font-medium"}`}>
+                <span
+                  className={`max-w-full truncate text-[10px] leading-tight ${active ? "font-semibold" : "font-medium"}`}
+                >
                   {tab.label}
                 </span>
               </button>

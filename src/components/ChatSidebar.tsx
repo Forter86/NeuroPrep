@@ -125,7 +125,7 @@ export function ChatSidebar({
       className={
         isDrawer
           ? "flex h-full min-h-0 w-full flex-col overflow-hidden p-4"
-          : "flex h-full min-h-0 max-h-full w-full max-w-full flex-shrink-0 flex-col self-stretch overflow-hidden rounded-2xl border border-slate-300/70 bg-white/90 p-3 shadow-md shadow-slate-900/5 backdrop-blur max-sm:max-h-[42vh] sm:h-full sm:max-h-none sm:w-80 sm:min-w-[20rem] md:w-[22.5rem] md:min-w-[22.5rem] md:p-4"
+          : "flex h-full max-h-full min-h-0 w-full max-w-full flex-shrink-0 flex-col self-stretch overflow-hidden rounded-2xl border border-slate-300/70 bg-white/90 p-3 shadow-md shadow-slate-900/5 backdrop-blur max-sm:max-h-[42vh] sm:h-full sm:min-h-0 sm:w-80 sm:min-w-[20rem] md:w-[22.5rem] md:min-w-[22.5rem] md:p-4"
       }
     >
       <button

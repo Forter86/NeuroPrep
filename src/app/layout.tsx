@@ -35,7 +35,7 @@ export default function RootLayout({
       lang="ru"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="flex h-full min-h-0 flex-col md:min-h-screen">
+      <body className="flex h-full min-h-0 flex-col">
         <MobileViewportSync />
         {children}
       </body>

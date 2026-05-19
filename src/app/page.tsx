@@ -33,7 +33,7 @@ export default function Home() {
   return (
     <>
       {/* Desktop */}
-      <div className="relative hidden h-full min-h-0 flex-1 flex-col bg-[radial-gradient(ellipse_120%_80%_at_50%_-20%,rgba(59,130,246,0.17),transparent)] md:flex">
+      <div className="desktop-app-shell relative hidden min-h-0 flex-1 flex-col bg-[radial-gradient(ellipse_120%_80%_at_50%_-20%,rgba(59,130,246,0.17),transparent)] md:flex">
         <TopNavMenu currentView={desktopView} onSelect={setDesktopView} />
         <header className="shrink-0 border-b border-slate-300/70 bg-slate-50/80 backdrop-blur">
           <div className="mx-auto flex max-w-3xl flex-col gap-1 px-4 py-6 sm:px-6">
@@ -67,8 +67,8 @@ export default function Home() {
       </div>
 
       {/* Mobile */}
-      <div className="mobile-app-shell fixed left-0 right-0 z-0 flex flex-col overflow-hidden bg-[#f3f7fc] md:hidden">
-        <main className="min-h-0 flex-1 overflow-hidden">
+      <div className="mobile-app-shell fixed z-0 flex w-full max-w-full flex-col overflow-hidden bg-[#f3f7fc] md:hidden">
+        <main className="min-h-0 w-full max-w-full flex-1 overflow-hidden overflow-x-clip">
           {mobileTab === "chat" && <ChatWorkspace layout="mobile" />}
           {mobileTab === "tests" && (
             <MobilePlaceholder

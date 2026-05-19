@@ -7,15 +7,21 @@ const MOBILE_MQ = "(max-width: 767px)";
 function syncViewportVars() {
   const vv = window.visualViewport;
   const height = vv?.height ?? window.innerHeight;
+  const width = vv?.width ?? window.innerWidth;
   const offsetTop = vv?.offsetTop ?? 0;
+  const offsetLeft = vv?.offsetLeft ?? 0;
 
   document.documentElement.style.setProperty("--app-height", `${height}px`);
+  document.documentElement.style.setProperty("--app-width", `${width}px`);
   document.documentElement.style.setProperty("--app-offset-top", `${offsetTop}px`);
+  document.documentElement.style.setProperty("--app-offset-left", `${offsetLeft}px`);
 }
 
 function clearViewportVars() {
   document.documentElement.style.removeProperty("--app-height");
+  document.documentElement.style.removeProperty("--app-width");
   document.documentElement.style.removeProperty("--app-offset-top");
+  document.documentElement.style.removeProperty("--app-offset-left");
 }
 
 export function MobileViewportSync() {
