@@ -67,7 +67,7 @@ export default function Home() {
       </div>
 
       {/* Mobile */}
-      <div className="mobile-app-shell fixed inset-0 z-0 flex flex-col overflow-hidden bg-[#f3f7fc] md:hidden">
+      <div className="mobile-app-shell fixed left-0 right-0 z-0 flex flex-col overflow-hidden bg-[#f3f7fc] md:hidden">
         <main className="min-h-0 flex-1 overflow-hidden">
           {mobileTab === "chat" && <ChatWorkspace layout="mobile" />}
           {mobileTab === "tests" && (

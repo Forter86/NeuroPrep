@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { MobileViewportSync } from "@/components/MobileViewportSync";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -17,10 +18,11 @@ export const metadata: Metadata = {
   description: "Виртуальный преподаватель по охране труда и ТБ",
 };
 
-export const viewport = {
+export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  viewportFit: "cover" as const,
+  viewportFit: "cover",
+  interactiveWidget: "resizes-content",
 };
 
 export default function RootLayout({
@@ -33,7 +35,10 @@ export default function RootLayout({
       lang="ru"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="flex h-full min-h-0 flex-col md:min-h-screen">{children}</body>
+      <body className="flex h-full min-h-0 flex-col md:min-h-screen">
+        <MobileViewportSync />
+        {children}
+      </body>
     </html>
   );
 }

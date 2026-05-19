@@ -27,8 +27,8 @@ body {
 @media (max-width: 767px) {
   html,
   body {
-    height: 100svh;
-    max-height: 100svh;
+    height: var(--app-height, 100svh);
+    max-height: var(--app-height, 100svh);
     overflow: hidden;
     overscroll-behavior: none;
     touch-action: manipulation;
@@ -36,8 +36,9 @@ body {
 }
 
 .mobile-app-shell {
-  height: 100svh;
-  max-height: 100svh;
+  top: var(--app-offset-top, 0px);
+  height: var(--app-height, 100svh);
+  max-height: var(--app-height, 100svh);
 }
 
 @media (min-width: 768px) {
