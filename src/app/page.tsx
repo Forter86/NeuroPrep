@@ -5,6 +5,7 @@ import { ChatWorkspace } from "@/components/ChatWorkspace";
 import { LearningPathSelector } from "@/components/LearningPathSelector";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
 import { MobilePlaceholder } from "@/components/MobilePlaceholder";
+import { MobileTestsModule } from "@/components/mobile-tests/MobileTestsModule";
 import { TopNavMenu } from "@/components/TopNavMenu";
 import type { AppTab, DesktopModuleView } from "@/types/appTab";
 
@@ -70,13 +71,7 @@ export default function Home() {
       <div className="mobile-app-shell fixed z-0 flex w-full max-w-full flex-col overflow-hidden bg-[#f3f7fc] md:hidden">
         <main className="min-h-0 w-full max-w-full flex-1 overflow-hidden overflow-x-clip">
           {mobileTab === "chat" && <ChatWorkspace layout="mobile" />}
-          {mobileTab === "tests" && (
-            <MobilePlaceholder
-              title="Тесты"
-              subtitle="Проверка знаний по охране труда"
-              placeholder="Здесь будут тесты и практика по технике безопасности"
-            />
-          )}
+          {mobileTab === "tests" && <MobileTestsModule />}
           {mobileTab === "scenarios" && (
             <MobilePlaceholder
               title="Сценарии"
