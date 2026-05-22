@@ -5,6 +5,7 @@ import { ChatWorkspace } from "@/components/ChatWorkspace";
 import { LearningPathSelector } from "@/components/LearningPathSelector";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
 import { MobilePlaceholder } from "@/components/MobilePlaceholder";
+import { MobileScenariosModule } from "@/components/mobile-scenarios/MobileScenariosModule";
 import { MobileTestsModule } from "@/components/mobile-tests/MobileTestsModule";
 import { TopNavMenu } from "@/components/TopNavMenu";
 import type { AppTab, DesktopModuleView } from "@/types/appTab";
@@ -72,13 +73,7 @@ export default function Home() {
         <main className="min-h-0 w-full max-w-full flex-1 overflow-hidden overflow-x-clip">
           {mobileTab === "chat" && <ChatWorkspace layout="mobile" />}
           {mobileTab === "tests" && <MobileTestsModule />}
-          {mobileTab === "scenarios" && (
-            <MobilePlaceholder
-              title="Сценарии"
-              subtitle="Практика на реальных ситуациях"
-              placeholder="Здесь будут обучающие сценарии"
-            />
-          )}
+          {mobileTab === "scenarios" && <MobileScenariosModule />}
           {mobileTab === "analytics" && (
             <MobilePlaceholder
               title="Аналитика"

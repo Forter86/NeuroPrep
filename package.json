@@ -10,7 +10,8 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
-    "build:tests": "node scripts/build-material-tests.mjs"
+    "build:tests": "node scripts/build-material-tests.mjs",
+    "build:scenarios": "node scripts/build-scenarios.mjs"
   },
   "dependencies": {
     "next": "16.2.2",
