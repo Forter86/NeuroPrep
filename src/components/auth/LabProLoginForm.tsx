@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, type FormEvent } from "react";
 import type { AuthUser } from "@/lib/auth/users";
 import { validateCredentials } from "@/lib/auth/users";
@@ -16,7 +17,14 @@ function LabProLogo() {
   return (
     <div className="flex items-center justify-center gap-2">
       <span className="text-2xl font-bold tracking-tight text-slate-900">LabPro</span>
-      <span className="rounded-lg bg-slate-900 px-2 py-0.5 text-sm font-bold text-white">ID</span>
+      <Image
+        src="/icons/LabPro.png"
+        alt="ID"
+        width={48}
+        height={24}
+        className="h-6 w-auto"
+        priority
+      />
     </div>
   );
 }
@@ -110,7 +118,7 @@ function LoginCard({ onSuccess }: LabProLoginFormProps) {
           type="button"
           className="w-full rounded-xl border border-slate-300 bg-white py-3.5 text-[15px] font-medium text-slate-900 transition hover:bg-slate-50"
         >
-          Создать ID
+          Зарегистрироваться
         </button>
       </form>
     </div>

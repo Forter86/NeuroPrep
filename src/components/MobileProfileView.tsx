@@ -18,7 +18,6 @@ export function MobileProfileView() {
       <div className="px-4 pb-4">
         <div className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-sm shadow-slate-900/5">
           <UserAccountMenu label={label} initial={initial} className="w-full" />
-          <p className="mt-3 pl-[3.25rem] text-sm text-slate-500">LabPro ID</p>
         </div>
       </div>
     </div>
