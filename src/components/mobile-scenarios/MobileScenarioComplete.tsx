@@ -11,7 +11,7 @@ export function MobileScenarioComplete({ result, onDone }: MobileScenarioComplet
   const passed = result.percent >= 75;
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white px-6 md:hidden">
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white px-6">
       <div className="flex h-20 w-20 items-center justify-center rounded-full bg-emerald-100">
         <svg className="h-10 w-10 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
           <path d="M8 21h8M12 17v4M7 4h10l1 7H6l1-7zM7 4L5 8M17 4l2 4" strokeLinecap="round" strokeLinejoin="round" />

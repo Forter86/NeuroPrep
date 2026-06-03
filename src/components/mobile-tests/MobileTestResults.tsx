@@ -26,7 +26,7 @@ export function MobileTestResults({ module, questions, result, onDone }: MobileT
   const answerByQuestionId = new Map(result.answers.map((a) => [a.questionId, a]));
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-[#f3f7fc] md:hidden">
+    <div className="fixed inset-0 z-50 flex flex-col bg-[#f3f7fc]">
       <div className="shrink-0 px-4 pb-3 pt-6 text-center">
         <div
           className={`mx-auto flex h-16 w-16 items-center justify-center rounded-full ${

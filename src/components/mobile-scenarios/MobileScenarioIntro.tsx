@@ -11,7 +11,7 @@ type MobileScenarioIntroProps = {
 
 export function MobileScenarioIntro({ scenario, onBack, onStart }: MobileScenarioIntroProps) {
   return (
-    <div className="fixed inset-0 z-50 flex flex-col overflow-hidden bg-white md:hidden">
+    <div className="fixed inset-0 z-50 flex flex-col overflow-hidden bg-white">
       <div className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain">
         <div className="relative h-52 w-full shrink-0">
           <button

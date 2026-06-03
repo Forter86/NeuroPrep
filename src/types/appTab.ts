@@ -1,3 +1,3 @@
 export type AppTab = "chat" | "tests" | "scenarios" | "analytics" | "profile";
 
-export type DesktopModuleView = "chat" | "learning" | "analytics";
+export type DesktopModuleView = "chat" | "tests" | "scenarios" | "analytics";

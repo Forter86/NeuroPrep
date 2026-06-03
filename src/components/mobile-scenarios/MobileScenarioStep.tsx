@@ -48,7 +48,7 @@ export function MobileScenarioStep({
   const progress = ((stepIndex + 1) / total) * 100;
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-white md:hidden">
+    <div className="fixed inset-0 z-50 flex flex-col bg-white">
       <header className="shrink-0 px-4 pt-3">
         <div className="flex items-center justify-between">
           <p className="text-sm font-medium text-slate-500">
