@@ -5,6 +5,7 @@ import { ChatWorkspace } from "@/components/ChatWorkspace";
 import { LearningPathSelector } from "@/components/LearningPathSelector";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
 import { MobilePlaceholder } from "@/components/MobilePlaceholder";
+import { MobileProfileView } from "@/components/MobileProfileView";
 import { MobileScenariosModule } from "@/components/mobile-scenarios/MobileScenariosModule";
 import { MobileTestsModule } from "@/components/mobile-tests/MobileTestsModule";
 import { TopNavMenu } from "@/components/TopNavMenu";
@@ -81,13 +82,7 @@ export default function Home() {
               placeholder="Здесь будет статистика и аналитика"
             />
           )}
-          {mobileTab === "profile" && (
-            <MobilePlaceholder
-              title="Профиль"
-              subtitle="Ваш аккаунт и настройки"
-              placeholder="Здесь будет профиль"
-            />
-          )}
+          {mobileTab === "profile" && <MobileProfileView />}
         </main>
         <MobileBottomNav current={mobileTab} onSelect={setMobileTab} />
       </div>

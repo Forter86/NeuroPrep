@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { AuthGate } from "@/components/auth/AuthGate";
 import { MobileViewportSync } from "@/components/MobileViewportSync";
 import "./globals.css";
 
@@ -37,7 +38,7 @@ export default function RootLayout({
     >
       <body className="flex h-full min-h-0 flex-col">
         <MobileViewportSync />
-        {children}
+        <AuthGate>{children}</AuthGate>
       </body>
     </html>
   );

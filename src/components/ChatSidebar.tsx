@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { useAuthUser } from "@/lib/auth/useAuthUser";
 import { sortPinnedSessions, sortSessionsByRecency } from "@/lib/sortChatSessions";
 import type { ChatSession } from "@/types/chatSession";
 
@@ -68,6 +69,9 @@ export function ChatSidebar({
   onDelete,
 }: ChatSidebarProps) {
   const isDrawer = variant === "drawer";
+  const authUser = useAuthUser();
+  const userLabel = authUser?.login ?? "Гость";
+  const userInitial = userLabel.charAt(0).toUpperCase();
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const [menuPos, setMenuPos] = useState<{ top: number; left: number } | null>(null);
   const [portalReady, setPortalReady] = useState(false);
@@ -250,10 +254,10 @@ export function ChatSidebar({
 
         <div className="mt-3 flex shrink-0 items-center gap-3 border-t border-slate-200/80 pt-3">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-600 text-sm font-semibold text-white">
-            Г
+            {userInitial}
           </div>
           <div className="min-w-0">
-            <p className="truncate text-sm font-medium text-slate-900">Гость</p>
+            <p className="truncate text-sm font-medium text-slate-900">{userLabel}</p>
           </div>
         </div>
       </aside>
