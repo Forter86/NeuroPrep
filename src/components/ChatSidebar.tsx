@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useAuthUser } from "@/lib/auth/useAuthUser";
+import { UserAccountMenu } from "@/components/auth/UserAccountMenu";
 import { sortPinnedSessions, sortSessionsByRecency } from "@/lib/sortChatSessions";
 import type { ChatSession } from "@/types/chatSession";
 
@@ -252,13 +253,12 @@ export function ChatSidebar({
           ))}
         </div>
 
-        <div className="mt-3 flex shrink-0 items-center gap-3 border-t border-slate-200/80 pt-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-600 text-sm font-semibold text-white">
-            {userInitial}
-          </div>
-          <div className="min-w-0">
-            <p className="truncate text-sm font-medium text-slate-900">{userLabel}</p>
-          </div>
+        <div className="mt-3 shrink-0 border-t border-slate-200/80 pt-3">
+          <UserAccountMenu
+            label={userLabel}
+            initial={userInitial}
+            className="w-full px-1 py-1"
+          />
         </div>
       </aside>
 

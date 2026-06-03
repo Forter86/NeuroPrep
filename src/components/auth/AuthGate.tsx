@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { AuthUser } from "@/lib/auth/users";
-import { getSessionUser } from "@/lib/auth/sessionStorage";
+import { clearSessionUser, getSessionUser } from "@/lib/auth/sessionStorage";
+import { AuthContext } from "@/lib/auth/AuthContext";
 import { LabProLoginForm } from "@/components/auth/LabProLoginForm";
 
 type AuthGateProps = {
@@ -18,6 +19,11 @@ export function AuthGate({ children }: AuthGateProps) {
     setReady(true);
   }, []);
 
+  const logout = useCallback(() => {
+    clearSessionUser();
+    setUser(null);
+  }, []);
+
   if (!ready) {
     return <div className="min-h-full flex-1 bg-white" aria-hidden />;
   }
@@ -30,5 +36,5 @@ export function AuthGate({ children }: AuthGateProps) {
     );
   }
 
-  return <>{children}</>;
+  return <AuthContext.Provider value={{ user, logout }}>{children}</AuthContext.Provider>;
 }

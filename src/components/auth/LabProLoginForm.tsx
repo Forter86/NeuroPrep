@@ -128,8 +128,8 @@ export function LabProLoginForm({ onSuccess }: LabProLoginFormProps) {
         <LoginCard onSuccess={onSuccess} />
       </div>
 
-      {/* Mobile — без фона */}
-      <div className="flex min-h-full flex-1 items-center justify-center bg-white px-4 py-8 md:hidden">
+      {/* Mobile — без фона, фиксированная видимая область */}
+      <div className="auth-mobile-shell flex items-center justify-center bg-white px-4 py-6 md:hidden">
         <LoginCard onSuccess={onSuccess} />
       </div>
     </>

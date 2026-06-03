@@ -48,8 +48,15 @@ export function MobileViewportSync() {
 
     const onKeyboardLikelyClosed = () => {
       scheduleSync();
-      window.setTimeout(scheduleSync, 120);
-      window.setTimeout(scheduleSync, 320);
+      window.scrollTo(0, 0);
+      window.setTimeout(() => {
+        scheduleSync();
+        window.scrollTo(0, 0);
+      }, 120);
+      window.setTimeout(() => {
+        scheduleSync();
+        window.scrollTo(0, 0);
+      }, 320);
     };
 
     onChange();
