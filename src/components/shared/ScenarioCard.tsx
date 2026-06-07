@@ -7,17 +7,6 @@ type ScenarioCardProps = {
   className?: string;
 };
 
-function DifficultyBadge({ label }: { label: string }) {
-  return (
-    <span className="inline-flex items-center gap-1 rounded-full bg-red-600/95 px-2.5 py-1 text-xs font-semibold text-white shadow-sm">
-      <svg className="h-3 w-3" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-        <path d="M12 2L2 22h20L12 2z" />
-      </svg>
-      {label}
-    </span>
-  );
-}
-
 export function ScenarioCard({ scenario, onOpen, className = "" }: ScenarioCardProps) {
   return (
     <article className={`overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-sm shadow-slate-900/5 transition hover:shadow-md ${className}`}>
@@ -31,9 +20,6 @@ export function ScenarioCard({ scenario, onOpen, className = "" }: ScenarioCardP
             sizes="(max-width: 768px) 100vw, 360px"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent" />
-          <div className="absolute left-3 top-3">
-            <DifficultyBadge label={scenario.difficulty} />
-          </div>
           <h2 className="absolute bottom-3 left-3 right-3 text-lg font-bold leading-snug text-white">{scenario.title}</h2>
         </div>
 

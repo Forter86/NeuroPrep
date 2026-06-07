@@ -4,11 +4,12 @@ import { useMemo, useState } from "react";
 import { ChatWorkspace } from "@/components/ChatWorkspace";
 import { DesktopScenariosModule } from "@/components/desktop-scenarios/DesktopScenariosModule";
 import { DesktopTestsModule } from "@/components/desktop-tests/DesktopTestsModule";
+import { MobileAnalyticsView } from "@/components/mobile-analytics/MobileAnalyticsView";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
-import { MobilePlaceholder } from "@/components/MobilePlaceholder";
 import { MobileProfileView } from "@/components/MobileProfileView";
 import { MobileScenariosModule } from "@/components/mobile-scenarios/MobileScenariosModule";
 import { MobileTestsModule } from "@/components/mobile-tests/MobileTestsModule";
+import { SessionTimeTracker } from "@/components/SessionTimeTracker";
 import { TopNavMenu } from "@/components/TopNavMenu";
 import type { AppTab, DesktopModuleView } from "@/types/appTab";
 
@@ -38,6 +39,7 @@ export default function Home() {
 
   return (
     <>
+      <SessionTimeTracker />
       {/* Desktop */}
       <div className="desktop-app-shell relative hidden min-h-0 flex-1 flex-col bg-[radial-gradient(ellipse_120%_80%_at_50%_-20%,rgba(59,130,246,0.17),transparent)] md:flex">
         <TopNavMenu currentView={desktopView} onSelect={setDesktopView} />
@@ -79,13 +81,7 @@ export default function Home() {
           {mobileTab === "chat" && <ChatWorkspace layout="mobile" />}
           {mobileTab === "tests" && <MobileTestsModule />}
           {mobileTab === "scenarios" && <MobileScenariosModule />}
-          {mobileTab === "analytics" && (
-            <MobilePlaceholder
-              title="Аналитика"
-              subtitle="Прогресс и статистика обучения"
-              placeholder="Здесь будет статистика и аналитика"
-            />
-          )}
+          {mobileTab === "analytics" && <MobileAnalyticsView />}
           {mobileTab === "profile" && <MobileProfileView />}
         </main>
         <MobileBottomNav current={mobileTab} onSelect={setMobileTab} />

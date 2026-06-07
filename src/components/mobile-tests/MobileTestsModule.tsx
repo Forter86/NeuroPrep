@@ -9,6 +9,7 @@ import {
   pickRandomQuestions,
 } from "@/lib/materialTests/utils";
 import type { MaterialQuestion, TestAttemptRecord, TestRunResult } from "@/types/materialTest";
+import { appendActivity } from "@/lib/analytics/activityStorage";
 import { MobileTestQuiz } from "@/components/mobile-tests/MobileTestQuiz";
 import { MobileTestResults } from "@/components/mobile-tests/MobileTestResults";
 import { MobileTestsList } from "@/components/mobile-tests/MobileTestsList";
@@ -97,10 +98,18 @@ export function MobileTestsModule() {
       percent,
       completedAt: new Date().toISOString(),
     });
+    appendActivity({
+      kind: "test",
+      refId: activeTestId,
+      title: activeModule?.title ?? activeTestId,
+      correct,
+      total,
+      percent,
+    });
     refreshAttempts();
     setResult(runResult);
     setScreen("results");
-  }, [activeTestId, runQuestions, selections, refreshAttempts]);
+  }, [activeTestId, activeModule, runQuestions, selections, refreshAttempts]);
 
   if (screen === "quiz" && activeModule && runQuestions.length > 0) {
     return (

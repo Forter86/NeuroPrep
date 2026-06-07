@@ -3,6 +3,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { SCENARIO_MODULES } from "@/data/scenarios";
 import { buildScenarioAnswers, calcPercent } from "@/lib/scenarios/utils";
+import { appendActivity } from "@/lib/analytics/activityStorage";
 import type { ScenarioRunResult } from "@/types/scenario";
 import { DesktopScenariosList } from "@/components/desktop-scenarios/DesktopScenariosList";
 import { MobileScenarioComplete } from "@/components/mobile-scenarios/MobileScenarioComplete";
@@ -67,12 +68,21 @@ export function DesktopScenariosModule() {
     const answers = buildScenarioAnswers(activeScenario.steps, selections);
     const correct = answers.filter((a) => a.isCorrect).length;
     const total = activeScenario.steps.length;
+    const percent = calcPercent(correct, total);
     setResult({
       scenarioId: activeScenario.id,
       answers,
       correct,
       total,
-      percent: calcPercent(correct, total),
+      percent,
+    });
+    appendActivity({
+      kind: "scenario",
+      refId: activeScenario.id,
+      title: activeScenario.title,
+      correct,
+      total,
+      percent,
     });
     setScreen("complete");
   }, [activeScenario, stepIndex, selections]);
