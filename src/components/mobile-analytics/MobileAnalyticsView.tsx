@@ -65,10 +65,12 @@ function DocIcon() {
   );
 }
 
-function ToolsIcon() {
+function HelmetIcon() {
   return (
     <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-      <path d="M14.7 6.3a4 4 0 0 0 5 5l-9 9a2.1 2.1 0 0 1-3-3l9-9z" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M2.5 17.5h19" strokeLinecap="round" />
+      <path d="M5 17.5v-2.5a7 7 0 0 1 14 0v2.5" strokeLinejoin="round" />
+      <path d="M10 8.6V7.2a2 2 0 0 1 4 0v1.4" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -128,7 +130,7 @@ export function MobileAnalyticsView() {
             label="Тесты"
           />
           <StatCard
-            icon={<ToolsIcon />}
+            icon={<HelmetIcon />}
             tone="orange"
             value={`${summary?.completedScenarios ?? 0}`}
             label="Сценарии"

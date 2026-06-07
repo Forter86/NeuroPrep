@@ -23,3 +23,12 @@ export function saveChatSessions(sessions: ChatSession[]) {
     // ignore quota / private mode
   }
 }
+
+export function clearChatSessions() {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch {
+    // ignore quota / private mode
+  }
+}
