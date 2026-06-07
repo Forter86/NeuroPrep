@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { ChatWorkspace } from "@/components/ChatWorkspace";
+import { DesktopAnalyticsView } from "@/components/desktop-analytics/DesktopAnalyticsView";
 import { DesktopScenariosModule } from "@/components/desktop-scenarios/DesktopScenariosModule";
 import { DesktopTestsModule } from "@/components/desktop-tests/DesktopTestsModule";
 import { MobileAnalyticsView } from "@/components/mobile-analytics/MobileAnalyticsView";
@@ -63,15 +64,7 @@ export default function Home() {
           {desktopView === "chat" && <ChatWorkspace layout="desktop" />}
           {desktopView === "tests" && <DesktopTestsModule />}
           {desktopView === "scenarios" && <DesktopScenariosModule />}
-          {desktopView === "analytics" && (
-            <section className="mx-auto w-full max-w-4xl rounded-3xl border border-slate-300/70 bg-white/80 p-6 shadow-lg shadow-slate-900/5 backdrop-blur">
-              <h2 className="text-2xl font-semibold text-slate-900">Аналитика обучения</h2>
-              <p className="mt-3 text-slate-600">
-                Здесь будет дашборд с результатами: процент правильных ответов, темы с рисками и персональные
-                рекомендации.
-              </p>
-            </section>
-          )}
+          {desktopView === "analytics" && <DesktopAnalyticsView />}
         </main>
       </div>
 

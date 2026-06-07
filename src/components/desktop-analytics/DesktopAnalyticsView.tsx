@@ -15,7 +15,7 @@ import {
   percentTextClass,
 } from "@/components/analytics/AnalyticsParts";
 
-export function MobileAnalyticsView() {
+export function DesktopAnalyticsView() {
   const [summary, setSummary] = useState<AnalyticsSummary | null>(null);
 
   useEffect(() => {
@@ -26,56 +26,57 @@ export function MobileAnalyticsView() {
   }, []);
 
   return (
-    <div className="flex h-full min-h-0 w-full flex-col overflow-hidden bg-[#f3f7fc]">
-      <div className="shrink-0 px-4 pb-2 pt-4">
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900">Аналитика</h1>
-        <p className="mt-0.5 text-sm text-slate-500">Ваш прогресс обучения</p>
+    <div className="w-full">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+        <StatCard
+          size="lg"
+          icon={<ClockIcon />}
+          tone="blue"
+          value={summary ? formatActiveTime(summary.activeSeconds) : "0ч 0м"}
+          label="Время"
+        />
+        <StatCard
+          size="lg"
+          icon={<TrophyIcon />}
+          tone="green"
+          value={`${summary?.averageTestScore ?? 0}%`}
+          label="Средний балл"
+        />
+        <StatCard
+          size="lg"
+          icon={<DocIcon />}
+          tone="purple"
+          value={`${summary?.completedTests ?? 0}`}
+          label="Тесты"
+        />
+        <StatCard
+          size="lg"
+          icon={<HelmetIcon />}
+          tone="orange"
+          value={`${summary?.completedScenarios ?? 0}`}
+          label="Сценарии"
+        />
+        <StatCard
+          size="lg"
+          icon={<ChatIcon />}
+          tone="violet"
+          value={`${summary?.aiMessages ?? 0}`}
+          label="Сообщений ИИ"
+        />
+        <StatCard
+          size="lg"
+          icon={<MedalIcon />}
+          tone="red"
+          value={`${summary?.successRate ?? 0}%`}
+          label="Успешность"
+        />
       </div>
 
-      <div className="min-h-0 flex-1 space-y-6 overflow-y-auto overflow-x-hidden overscroll-y-contain px-4 pb-6 pt-2">
-        <div className="grid grid-cols-3 gap-3">
-          <StatCard
-            icon={<ClockIcon />}
-            tone="blue"
-            value={summary ? formatActiveTime(summary.activeSeconds) : "0ч 0м"}
-            label="Время"
-          />
-          <StatCard
-            icon={<TrophyIcon />}
-            tone="green"
-            value={`${summary?.averageTestScore ?? 0}%`}
-            label="Средний балл"
-          />
-          <StatCard
-            icon={<DocIcon />}
-            tone="purple"
-            value={`${summary?.completedTests ?? 0}`}
-            label="Тесты"
-          />
-          <StatCard
-            icon={<HelmetIcon />}
-            tone="orange"
-            value={`${summary?.completedScenarios ?? 0}`}
-            label="Сценарии"
-          />
-          <StatCard
-            icon={<ChatIcon />}
-            tone="violet"
-            value={`${summary?.aiMessages ?? 0}`}
-            label="Сообщений ИИ"
-          />
-          <StatCard
-            icon={<MedalIcon />}
-            tone="red"
-            value={`${summary?.successRate ?? 0}%`}
-            label="Успешность"
-          />
-        </div>
-
-        <section>
-          <h2 className="text-xs font-bold uppercase tracking-wide text-slate-800">Прогресс по темам</h2>
+      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-5">
+        <section className="lg:col-span-3">
+          <h2 className="text-sm font-bold uppercase tracking-wide text-slate-800">Прогресс по темам</h2>
           {summary && summary.topics.length > 0 ? (
-            <div className="mt-3 space-y-3">
+            <div className="mt-3 grid grid-cols-1 gap-4 xl:grid-cols-2">
               {summary.topics.map((topic) => (
                 <div
                   key={topic.refId}
@@ -88,10 +89,7 @@ export function MobileAnalyticsView() {
                     </span>
                   </div>
                   <div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-200">
-                    <div
-                      className="h-full rounded-full bg-blue-600"
-                      style={{ width: `${topic.latestPercent}%` }}
-                    />
+                    <div className="h-full rounded-full bg-blue-600" style={{ width: `${topic.latestPercent}%` }} />
                   </div>
                   <div className="mt-2 flex items-center justify-between text-xs text-slate-500">
                     <span>Попыток: {topic.attempts}</span>
@@ -101,16 +99,16 @@ export function MobileAnalyticsView() {
               ))}
             </div>
           ) : (
-            <p className="mt-3 rounded-2xl border border-slate-200/90 bg-white p-4 text-sm text-slate-500">
+            <p className="mt-3 rounded-2xl border border-slate-200/90 bg-white p-5 text-sm text-slate-500">
               Пройдите тест, чтобы увидеть прогресс по темам.
             </p>
           )}
         </section>
 
-        <section>
-          <h2 className="text-xs font-bold uppercase tracking-wide text-slate-800">История активности</h2>
+        <section className="lg:col-span-2">
+          <h2 className="text-sm font-bold uppercase tracking-wide text-slate-800">История активности</h2>
           {summary && summary.history.length > 0 ? (
-            <div className="mt-3 divide-y divide-slate-100 rounded-2xl border border-slate-200/90 bg-white px-4 shadow-sm shadow-slate-900/5">
+            <div className="mt-3 max-h-[28rem] divide-y divide-slate-100 overflow-y-auto rounded-2xl border border-slate-200/90 bg-white px-4 shadow-sm shadow-slate-900/5">
               {summary.history.map((record) => (
                 <div key={record.id} className="flex items-start gap-3 py-3">
                   <span
@@ -130,7 +128,7 @@ export function MobileAnalyticsView() {
               ))}
             </div>
           ) : (
-            <p className="mt-3 rounded-2xl border border-slate-200/90 bg-white p-4 text-sm text-slate-500">
+            <p className="mt-3 rounded-2xl border border-slate-200/90 bg-white p-5 text-sm text-slate-500">
               Завершённых попыток пока нет.
             </p>
           )}
