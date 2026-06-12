@@ -3,7 +3,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { SCENARIO_MODULES } from "@/data/scenarios";
 import { buildScenarioAnswers, calcPercent } from "@/lib/scenarios/utils";
-import { appendActivity } from "@/lib/analytics/activityStorage";
+import { recordScenarioAttempt } from "@/lib/scenarios/attemptsApi";
 import type { ScenarioRunResult } from "@/types/scenario";
 import { MobileScenarioComplete } from "@/components/mobile-scenarios/MobileScenarioComplete";
 import { MobileScenarioIntro } from "@/components/mobile-scenarios/MobileScenarioIntro";
@@ -73,14 +73,7 @@ export function MobileScenariosModule() {
       total,
       percent,
     });
-    appendActivity({
-      kind: "scenario",
-      refId: activeScenario.id,
-      title: activeScenario.title,
-      correct,
-      total,
-      percent,
-    });
+    recordScenarioAttempt({ scenarioId: activeScenario.id, correct, total, percent });
     setScreen("complete");
   }, [activeScenario, stepIndex, selections]);
 

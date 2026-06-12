@@ -13,10 +13,10 @@ export function MobileProfileView() {
   const label = user?.login ?? "Гость";
   const initial = label.charAt(0).toUpperCase();
 
-  const handleClearChat = () => {
+  const handleClearChat = async () => {
     const confirmed = window.confirm("Очистить всю историю переписок с ИИ? Действие нельзя отменить.");
     if (!confirmed) return;
-    clearChatSessions();
+    await clearChatSessions();
     setCleared(true);
     window.setTimeout(() => setCleared(false), 2500);
   };

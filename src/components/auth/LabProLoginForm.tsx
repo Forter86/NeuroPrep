@@ -2,9 +2,8 @@
 
 import Image from "next/image";
 import { useState, type FormEvent } from "react";
-import type { AuthUser } from "@/lib/auth/users";
-import { validateCredentials } from "@/lib/auth/users";
-import { saveSessionUser } from "@/lib/auth/sessionStorage";
+import type { AuthUser } from "@/lib/auth/types";
+import { apiLogin } from "@/lib/auth/client";
 
 type LabProLoginFormProps = {
   onSuccess: (user: AuthUser) => void;
@@ -35,20 +34,19 @@ function LoginCard({ onSuccess }: LabProLoginFormProps) {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     setSubmitting(true);
     setError(null);
 
-    const user = validateCredentials(login, password);
-    if (!user) {
-      setError(LOGIN_ERROR);
+    const result = await apiLogin(login, password);
+    if (!result.ok) {
+      setError(result.error || LOGIN_ERROR);
       setSubmitting(false);
       return;
     }
 
-    saveSessionUser(user);
-    onSuccess(user);
+    onSuccess(result.user);
   };
 
   return (

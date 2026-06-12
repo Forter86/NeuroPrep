@@ -1,34 +1,32 @@
 import type { ChatSession } from "@/types/chatSession";
 import { normalizeStoredSessions } from "@/lib/normalizeChatSessions";
 
-const STORAGE_KEY = "neuroprep-chat-sessions-v1";
-
-export function loadChatSessions(): ChatSession[] | null {
-  if (typeof window === "undefined") return null;
+/** Загружает чаты пользователя с сервера. null — если запрос не удался. */
+export async function loadChatSessions(): Promise<ChatSession[] | null> {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw) as unknown;
-    return normalizeStoredSessions(parsed);
+    const res = await fetch("/api/chat/sessions", { credentials: "include", cache: "no-store" });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { sessions?: unknown };
+    return normalizeStoredSessions(data.sessions ?? []);
   } catch {
     return null;
   }
 }
 
-export function saveChatSessions(sessions: ChatSession[]) {
-  if (typeof window === "undefined") return;
+/** Сохраняет весь набор чатов пользователя (replace-all). */
+export async function saveChatSessions(sessions: ChatSession[]): Promise<void> {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
+    await fetch("/api/chat/sessions", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ sessions }),
+    });
   } catch {
-    // ignore quota / private mode
+    // ignore — повторим при следующем изменении
   }
 }
 
-export function clearChatSessions() {
-  if (typeof window === "undefined") return;
-  try {
-    localStorage.removeItem(STORAGE_KEY);
-  } catch {
-    // ignore quota / private mode
-  }
+export async function clearChatSessions(): Promise<void> {
+  await saveChatSessions([]);
 }

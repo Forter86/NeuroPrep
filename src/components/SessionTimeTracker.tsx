@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { addActiveSeconds } from "@/lib/analytics/sessionTimeStorage";
+import { reportActiveSeconds } from "@/lib/analytics/sessionTimeApi";
 
 const FLUSH_INTERVAL_MS = 10_000;
 
@@ -17,7 +17,7 @@ export function SessionTimeTracker() {
       const elapsed = (now - lastTickRef.current) / 1000;
       lastTickRef.current = now;
       if (elapsed > 0 && elapsed < 3600) {
-        addActiveSeconds(elapsed);
+        reportActiveSeconds(elapsed);
       }
     };
 

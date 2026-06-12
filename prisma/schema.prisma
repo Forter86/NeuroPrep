@@ -1,0 +1,141 @@
+// Prisma schema for NeuroPrep
+// Engine: MySQL / MariaDB (phpMyAdmin). For both, provider = "mysql".
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum AuthProviderKind {
+  local
+  keycloak
+}
+
+enum UserRole {
+  user
+  admin
+}
+
+enum ActivityKind {
+  test
+  scenario
+}
+
+enum ChatRole {
+  user
+  assistant
+  system
+}
+
+model User {
+  id           String           @id @default(cuid())
+  login        String           @unique
+  email        String?          @unique
+  passwordHash String? // null for keycloak-provisioned users
+  displayName  String
+  role         UserRole         @default(user)
+  provider     AuthProviderKind @default(local)
+  externalId   String?          @unique // Keycloak `sub`
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  refreshTokens    RefreshToken[]
+  testAttempts     TestAttempt[]
+  scenarioAttempts ScenarioAttempt[]
+  chatSessions     ChatSession[]
+  sessionTime      UserSessionTime?
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  revoked   Boolean  @default(false)
+  userAgent String?  @db.Text
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
+model TestAttempt {
+  id          String   @id @default(cuid())
+  userId      String
+  testId      String
+  correct     Int
+  total       Int
+  percent     Int
+  completedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, testId])
+  @@map("test_attempts")
+}
+
+model ScenarioAttempt {
+  id          String   @id @default(cuid())
+  userId      String
+  scenarioId  String
+  correct     Int
+  total       Int
+  percent     Int
+  completedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, scenarioId])
+  @@map("scenario_attempts")
+}
+
+model ChatSession {
+  id               String   @id @default(cuid())
+  userId           String
+  title            String   @db.VarChar(255)
+  pinned           Boolean  @default(false)
+  pinnedAt         DateTime?
+  titleManuallySet Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  user     User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages ChatMessage[]
+
+  @@index([userId])
+  @@map("chat_sessions")
+}
+
+model ChatMessage {
+  id        String   @id @default(cuid())
+  sessionId String
+  role      ChatRole
+  content   String   @db.LongText
+  position  Int      @default(0)
+  createdAt DateTime @default(now())
+
+  session ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+  @@map("chat_messages")
+}
+
+model UserSessionTime {
+  userId        String   @id
+  activeSeconds Int      @default(0)
+  updatedAt     DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_session_time")
+}

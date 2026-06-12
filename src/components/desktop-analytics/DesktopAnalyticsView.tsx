@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { AnalyticsSummary } from "@/types/analytics";
-import { buildAnalyticsSummary, formatActiveTime, formatActivityDate } from "@/lib/analytics/buildSummary";
+import { fetchAnalyticsSummary, formatActiveTime, formatActivityDate } from "@/lib/analytics/analyticsApi";
 import {
   ChatIcon,
   ClockIcon,
@@ -19,10 +19,17 @@ export function DesktopAnalyticsView() {
   const [summary, setSummary] = useState<AnalyticsSummary | null>(null);
 
   useEffect(() => {
-    const update = () => setSummary(buildAnalyticsSummary());
+    let cancelled = false;
+    const update = async () => {
+      const next = await fetchAnalyticsSummary();
+      if (!cancelled) setSummary(next);
+    };
     update();
     const interval = window.setInterval(update, 5000);
-    return () => window.clearInterval(interval);
+    return () => {
+      cancelled = true;
+      window.clearInterval(interval);
+    };
   }, []);
 
   return (

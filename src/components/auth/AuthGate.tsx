@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import type { AuthUser } from "@/lib/auth/users";
-import { clearSessionUser, getSessionUser } from "@/lib/auth/sessionStorage";
+import type { AuthUser } from "@/lib/auth/types";
+import { apiLogout, apiMe, apiRefresh } from "@/lib/auth/client";
 import { AuthContext } from "@/lib/auth/AuthContext";
 import { LabProLoginForm } from "@/components/auth/LabProLoginForm";
 
@@ -15,12 +15,22 @@ export function AuthGate({ children }: AuthGateProps) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    setUser(getSessionUser());
-    setReady(true);
+    let cancelled = false;
+    (async () => {
+      let current = await apiMe();
+      if (!current) current = await apiRefresh();
+      if (!cancelled) {
+        setUser(current);
+        setReady(true);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  const logout = useCallback(() => {
-    clearSessionUser();
+  const logout = useCallback(async () => {
+    await apiLogout();
     setUser(null);
   }, []);
 

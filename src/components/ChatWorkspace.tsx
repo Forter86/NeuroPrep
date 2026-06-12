@@ -46,22 +46,32 @@ export function ChatWorkspace({ layout = "desktop" }: ChatWorkspaceProps) {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
-    const stored = loadChatSessions();
-    if (stored && stored.length > 0) {
-      const sorted = [...stored].sort(sortSessionsByPinAndRecency);
-      setSessions(stored);
-      setActiveId(sorted[0]!.id);
-    } else {
-      const s = newSession();
-      setSessions([s]);
-      setActiveId(s.id);
-    }
-    setHydrated(true);
+    let cancelled = false;
+    (async () => {
+      const stored = await loadChatSessions();
+      if (cancelled) return;
+      if (stored && stored.length > 0) {
+        const sorted = [...stored].sort(sortSessionsByPinAndRecency);
+        setSessions(stored);
+        setActiveId(sorted[0]!.id);
+      } else {
+        const s = newSession();
+        setSessions([s]);
+        setActiveId(s.id);
+      }
+      setHydrated(true);
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
     if (!hydrated || sessions.length === 0) return;
-    saveChatSessions(sessions);
+    const timer = window.setTimeout(() => {
+      saveChatSessions(sessions);
+    }, 800);
+    return () => window.clearTimeout(timer);
   }, [sessions, hydrated]);
 
   useEffect(() => {

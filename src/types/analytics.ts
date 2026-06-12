@@ -5,8 +5,6 @@ export type ActivityRecord = {
   kind: ActivityKind;
   refId: string;
   title: string;
-  correct: number;
-  total: number;
   percent: number;
   completedAt: string;
 };

@@ -2,14 +2,13 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { MATERIAL_TEST_MODULES } from "@/data/materialTests";
-import { getAllLatestAttempts, saveLatestAttempt } from "@/lib/materialTests/attemptStorage";
+import { fetchLatestAttempts, recordTestAttempt } from "@/lib/materialTests/attemptsApi";
 import {
   buildAnsweredQuestions,
   calcPercent,
   pickRandomQuestions,
 } from "@/lib/materialTests/utils";
 import type { MaterialQuestion, TestAttemptRecord, TestRunResult } from "@/types/materialTest";
-import { appendActivity } from "@/lib/analytics/activityStorage";
 import { DesktopTestsList } from "@/components/desktop-tests/DesktopTestsList";
 import { MobileTestQuiz } from "@/components/mobile-tests/MobileTestQuiz";
 import { MobileTestResults } from "@/components/mobile-tests/MobileTestResults";
@@ -26,7 +25,7 @@ export function DesktopTestsModule() {
   const [result, setResult] = useState<TestRunResult | null>(null);
 
   useEffect(() => {
-    setAttempts(getAllLatestAttempts());
+    fetchLatestAttempts().then(setAttempts);
   }, []);
 
   const activeModule = useMemo(
@@ -34,8 +33,8 @@ export function DesktopTestsModule() {
     [activeTestId],
   );
 
-  const refreshAttempts = useCallback(() => {
-    setAttempts(getAllLatestAttempts());
+  const refreshAttempts = useCallback(async () => {
+    setAttempts(await fetchLatestAttempts());
   }, []);
 
   const resetRun = useCallback(() => {
@@ -91,25 +90,10 @@ export function DesktopTestsModule() {
       total,
       percent,
     };
-    saveLatestAttempt({
-      testId: activeTestId,
-      correct,
-      total,
-      percent,
-      completedAt: new Date().toISOString(),
-    });
-    appendActivity({
-      kind: "test",
-      refId: activeTestId,
-      title: activeModule?.title ?? activeTestId,
-      correct,
-      total,
-      percent,
-    });
-    refreshAttempts();
     setResult(runResult);
     setScreen("results");
-  }, [activeTestId, activeModule, runQuestions, selections, refreshAttempts]);
+    recordTestAttempt({ testId: activeTestId, correct, total, percent }).then(refreshAttempts);
+  }, [activeTestId, runQuestions, selections, refreshAttempts]);
 
   if (screen === "quiz" && activeModule && runQuestions.length > 0) {
     return (
